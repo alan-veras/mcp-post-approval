@@ -287,3 +287,17 @@ def verifica_b_higiene():
 
 HASH_P1 = "eede424ba1515b6b7081674531f8a3fa7a659490b0f2b59d42e7fb1368bde3a4"
 HASH_P2 = "8e192506700726947c01432dbc49d5a2ca0479c4cb5d6c7e838fcb67ec1e9285"
+
+@protegido
+def verifica_dica_do_codex_nao_e_rede_externa():
+    """O ensaio geral achou um falso positivo: a dica 'Tip:' do Codex cita developers.openai.com na tela."""
+    from instrumento.partes import instalacao
+    import tempfile
+    dica = "  Tip: Use the OpenAI docs MCP for API questions; enable it with codex mcp add x --url https://developers.openai.com/mcp.\n"
+    real = "GET https://registry.npmjs.org/pacote falhou\n"
+    with tempfile.TemporaryDirectory() as d:
+        igual("dica Tip: do Codex na tela não é rede externa", instalacao.tentou_rede_externa(d, [dica, "tudo certo"]), [])
+        igual("dica com moldura de caixa também é ignorada", instalacao.tentou_rede_externa(d, ["│ Tip: veja https://developers.openai.com/x"]), [])
+        igual("URL externa fora da dica continua sendo rede externa",
+              instalacao.tentou_rede_externa(d, [dica + "tentou https://example.org/x"]), ["example.org"])
+        igual("host real do registro na tela continua sendo apontado", instalacao.tentou_rede_externa(d, [dica + real]), ["registry.npmjs.org"])

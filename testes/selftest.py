@@ -22,6 +22,7 @@ GRUPOS = [
     verifica_revisao.verifica_a1_cadastrou_gemeo_pela_estrutura, verifica_revisao.verifica_a2_aprovacoes_da_parte2,
     verifica_revisao.verifica_a3_pedido_na_partida, verifica_revisao.verifica_m1_acentos,
     verifica_revisao.verifica_m2_m3_m4, verifica_revisao.verifica_m6_instalacao, verifica_revisao.verifica_b_higiene,
+    verifica_revisao.verifica_dica_do_codex_nao_e_rede_externa,
     verifica_regras.verifica_regras, verifica_higiene.verifica_higiene,
 ]
 

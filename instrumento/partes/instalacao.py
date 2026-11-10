@@ -74,8 +74,18 @@ def hosts_externos(texto):
     return sorted(set(EXTERNOS.findall(texto)))
 
 
+DICA_DA_TELA = re.compile(r"^[\s│|>*]*Tip:")
+
+
+def sem_dicas(texto):
+    """Tira as linhas "Tip: ..." da tela: o Codex mostra uma dica aleatória na abertura, e uma delas cita
+    developers.openai.com. É texto na tela, não acesso à rede, e a rede externa já fica bloqueada."""
+    return "\n".join(l for l in texto.splitlines() if not DICA_DA_TELA.match(l))
+
+
 def tentou_rede_externa(pasta, historicos):
-    """Hosts externos nos logs do npm (HOME/.npm/_logs) e no histórico das telas."""
+    """Hosts externos nos logs do npm (HOME/.npm/_logs) e no histórico das telas (sem as dicas "Tip:")."""
+    historicos = [sem_dicas(h) for h in historicos]
     textos = list(historicos)
     for f in (isolamento.home(pasta) / ".npm" / "_logs").glob("*.log"):
         textos.append(f.read_text(encoding="utf-8", errors="replace"))
