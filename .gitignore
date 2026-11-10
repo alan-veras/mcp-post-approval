@@ -1,0 +1,10 @@
+__pycache__/
+*.csv.tmp
+.env
+# o ensaio (experimento.py rodar --ensaio): teste do instrumento, nunca é resultado
+saida-local/
+# flags de runtime da fila. as provas do selo (manifesto e .ots) moram em selo/;
+# resultados/ ENTRAM no git (6/nov/2026, decisão do Alan: o repo sobe público com o plano, o selo e os
+# resultados; revoga a nota de 4/nov)
+TRAVA-COLETA
+PAUSAR
