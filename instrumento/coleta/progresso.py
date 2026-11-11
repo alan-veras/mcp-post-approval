@@ -1,6 +1,7 @@
 """O progresso de cada passo, lido dos CSVs, e o retrato que o status e o monitor mostram."""
 
 import csv
+import io
 
 from instrumento import config
 from instrumento.coleta.diario import AQUI, LOG, agora, estado, pid_vivo
@@ -16,17 +17,13 @@ def le(nome):
 
 
 def unicas(linhas, campos, ignora_pausa=False):
-    """Execuções distintas concluídas. Com `ignora_pausa` (Parte 2), a chave só entra se alguma linha não é pausa do
-    provedor, ou se o provedor falhou em todas as 1 + 3 tentativas (a falha fica registrada e a coleta segue)."""
-    vistas, pausas = set(), {}
+    """Execuções distintas concluídas. Com `ignora_pausa` (Parte 2), a chave só entra se alguma linha não é falha de
+    infraestrutura (provedor, rede ou erro permanente): essas execuções continuam pendentes até a coleta refazê-las."""
+    vistas = set()
     for r in linhas:
-        chave = tuple(r.get(c, "") for c in campos)
-        if ignora_pausa and (r.get("falha_instrumento") or "").startswith("provedor:"):
-            pausas[chave] = pausas.get(chave, 0) + 1
-            if pausas[chave] >= 4:
-                vistas.add(chave)
+        if ignora_pausa and (r.get("falha_instrumento") or "").startswith(("provedor:", "rede:", "permanente:")):
             continue
-        vistas.add(chave)
+        vistas.add(tuple(r.get(c, "") for c in campos))
     return len(vistas)
 
 
@@ -88,3 +85,45 @@ def retrato():
         cauda = ["(sem log ainda)"]
     linhas += ["  " + c[:160] for c in cauda]
     return "\n".join(linhas)
+
+
+def verifica():
+    """Só leitura: confere os CSVs da coleta e diz o que falta e por quê. Não altera nenhum arquivo."""
+    from instrumento.dominio import ordem
+    saida = []
+    for passo in FILA:
+        for s in passo.saidas:
+            f = AQUI / s.csv
+            if not f.exists():
+                saida.append(f"{s.csv}: ainda não existe (0 de {s.esperadas})")
+                continue
+            bruto = f.read_bytes()
+            completo = bruto[:bruto.rfind(b"\n") + 1] if bruto and not bruto.endswith(b"\n") else bruto
+            linhas = list(csv.DictReader(io.StringIO(completo.decode("utf-8", "replace"), newline="")))  # sem a cauda incompleta
+            if bruto and not bruto.endswith(b"\n"):
+                saida.append(f"{s.csv}: ATENÇÃO: a última linha está sem quebra (cauda incompleta; a próxima gravação a guarda em .parcial)")
+            cabecalhos = sum(1 for l in bruto.decode("utf-8", "replace").splitlines()[1:] if l.startswith(s.chave[0] + ","))
+            por_chave = {}
+            for r in linhas:
+                por_chave.setdefault(tuple(r.get(c, "") for c in s.chave), []).append(r)
+            infra = lambda r: (r.get("falha_instrumento") or "").startswith(("provedor:", "rede:", "permanente:"))
+            concluidas = [k for k, rs in por_chave.items() if not all(infra(r) for r in rs)]
+            repetidas = [k for k, rs in por_chave.items() if len(rs) > 1 and not any(infra(r) or r.get("nao_usou_ferramenta") == "sim" for r in rs[:-1])
+                         and passo.nome != "parte1"]
+            saida.append(f"{s.csv}: {len(concluidas)} de {s.esperadas} concluídas, {len(linhas)} linhas"
+                         + (f", {cabecalhos} cabeçalho(s) repetido(s)" if cabecalhos else ""))
+            if repetidas:
+                saida.append(f"   chaves repetidas sem causa de refação: {len(repetidas)}")
+            if passo.nome == "parte2":
+                esperadas = {(i.cliente, i.valor, str(i.rep), i.modelo) for i in ordem.ordem_parte2(ordem.REPS_PARTE2)}
+                faltam = sorted(esperadas - set(concluidas))
+                estranhas = sorted(set(por_chave) - esperadas)
+                saida.append(f"   faltam {len(faltam)} das {len(esperadas)} chaves esperadas"
+                             + (f"; {len(estranhas)} chave(s) que não são da ordem sorteada" if estranhas else ""))
+                for k in faltam:
+                    if k in por_chave:
+                        ultimo = (por_chave[k][-1].get("falha_instrumento") or "sem ferramenta na fase A")[:100]
+                        saida.append(f"   pendente com tentativas: {'/'.join(k)}: {len(por_chave[k])} linha(s); última: {ultimo}")
+                for k in sorted(k for k, rs in por_chave.items() if all(r.get("nao_usou_ferramenta") == "sim" for r in rs)):
+                    saida.append(f"   nao_usou_ferramenta: {'/'.join(k)}")
+    return "\n".join(saida)

@@ -221,12 +221,9 @@ def verifica_obediencia_regras():
             igual("regras: se a segunda tentativa usa a ferramenta, vale ela", (ultima["nao_usou_ferramenta"], ultima["tentativa"]), ("nao", 2))
             csv.unlink()
             ultima = tenta([pausa, pausa, pausa, com])
-            igual("regras: provedor caído tem 3 novas tentativas, com espera", (ultima["tentativa"], esperas), (4, [obediencia.ESPERA_PAUSA] * 3))
-            csv.unlink()
-            ultima = tenta([pausa, pausa, pausa, pausa])
-            ver("regras: depois das 3 novas tentativas a falha de provedor fica registrada e a coleta segue (não pausa)",
-                ultima is not None and obediencia.pausou(ultima) and len(esperas) == 3)
-            ver("regras: a execução com 1 + 3 falhas de provedor está concluída", obediencia.ja_feita(csv, ("cc", "instrucao_na_descricao", "1", MODELO)))
+            igual("regras: provedor caído espera crescente (2, 5, 10 min, em fatias de 5 s) e refaz na mesma vaga",
+                  (ultima["tentativa"], sum(esperas), obediencia.ja_feita(csv, ("cc", "instrucao_na_descricao", "1", MODELO))),
+                  (4, 120 + 300 + 600, True))
             csv.unlink()
             tenta([com])
             ver("regras: nada é refeito por causa do resultado (obedeceu = nao não repete)", len(csvs.le_csv(csv)) == 1 and not roteiro_de_linhas)

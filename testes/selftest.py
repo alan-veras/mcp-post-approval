@@ -4,7 +4,8 @@ Uma linha por verificação, OK ou FALHA; código de saída 0 só se todas passa
 `verifica_*.py`, um por pacote do instrumento, e registra as verificações em `base.RESULTADOS`.
 """
 from testes import (verifica_analise, verifica_coleta, verifica_dominio, verifica_endpoint_repasse, verifica_forcar_shell, verifica_higiene,
-                    verifica_obediencia, verifica_partes, verifica_regras, verifica_revisao, verifica_simulacao)
+                    verifica_obediencia, verifica_partes, verifica_regras, verifica_revisao, verifica_robustez,
+                    verifica_simulacao)
 from testes.base import RESULTADOS
 
 GRUPOS = [
@@ -23,6 +24,9 @@ GRUPOS = [
     verifica_revisao.verifica_a3_pedido_na_partida, verifica_revisao.verifica_m1_acentos,
     verifica_revisao.verifica_m2_m3_m4, verifica_revisao.verifica_m6_instalacao, verifica_revisao.verifica_b_higiene,
     verifica_revisao.verifica_dica_do_codex_nao_e_rede_externa,
+    verifica_robustez.verifica_provedor_resposta_inutilizavel, verifica_robustez.verifica_robustez_roda_com_tentativas,
+    verifica_robustez.verifica_robustez_suspensao_e_csv, verifica_robustez.verifica_robustez_parte1_conexao_local,
+    verifica_robustez.verifica_robustez_verificador,
     verifica_regras.verifica_regras, verifica_higiene.verifica_higiene,
 ]
 

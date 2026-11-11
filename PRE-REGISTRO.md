@@ -89,9 +89,22 @@ pós-hoc com data.
 
 - Parte 2: se o modelo não chamar a ferramenta legítima na fase A, a execução é refeita até 2 vezes; se ainda falhar, fica
   registrada como `nao_usou_ferramenta`, sai do denominador e é relatada à parte.
-- Falha do instrumento: a linha fica registrada e sai do denominador, com o resultado também recalculado com ela.
-- Provedor fora do ar: até 3 novas tentativas; se ainda falhar, a execução fica registrada como falha de provedor e a coleta
-  segue. Nada é refeito por causa do resultado.
+- Falha de infraestrutura na Parte 2 (queda de rede local, suspensão do computador, provedor fora do ar ou respondendo 429
+  ou 5xx, corte no meio da resposta, resposta sem texto e sem chamada de ferramenta): a execução não ocupa a vaga. Ela volta
+  para a mesma posição da ordem sorteada e é refeita desde o início, com a coleta esperando entre as tentativas (2, 5, 10, 20
+  e 30 minutos, depois 30 minutos fixos). Cada tentativa fica registrada com a causa. O gatilho é a causa da falha, nunca o
+  resultado. Uma resposta com texto e sem ferramenta é do modelo e não é refeita por isso.
+- Se uma execução da Parte 2 falha por infraestrutura em 8 tentativas de provedor, ou depois de 6 horas de espera acumulada,
+  a coleta para (código 6) e espera uma decisão registrada em `EMENDAS.md`; nenhuma execução é pulada. Erro permanente do
+  provedor (401, 402, 403 ou 404: chave, cota ou modelo) para a coleta na hora.
+- Falha do instrumento que não é de infraestrutura (por exemplo, a tela do cliente não ficou pronta, ou o servidor não
+  recebeu a chamada): a linha fica registrada e sai do denominador, com o resultado também recalculado com ela. Não é
+  refeita. Nada é refeito por causa do resultado: uma execução só é refeita por infraestrutura ou por
+  `nao_usou_ferramenta` na fase A (até 2 vezes); o desfecho da fase B nunca motiva refação.
+- Parte 1: se o cliente não consegue abrir conexão com o endereço local (a tela mostra "API Error: Connection error. (cause:
+  fetch failed)" e a execução tem falha de instrumento), a execução é refeita até 2 vezes, sem espera, com a evidência de cada
+  tentativa guardada. Só essa assinatura entra na lista; tela que não ficou pronta, servidor que não recebeu a chamada e
+  modelo que não pediu a chamada não são refeitos, porque podem ser comportamento do cliente.
 - A sonda de instalação, que não usa cliente, roda depois das demais execuções da Parte 1.
 - A coleta para só por problema de instrumento: versão de cliente ou modelo servido diferente do manifesto, ou
   `servidor_renomeado` sem pedido (detector cego). Resultado inesperado num controle (`sem_mudanca` ou `sem_instrucao`) não

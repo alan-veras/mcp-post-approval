@@ -1,6 +1,7 @@
 """Leitura e escrita dos CSVs: uma linha por execução, retomada pelo que já tem linha."""
 
 import csv
+import os
 from pathlib import Path
 
 
@@ -17,15 +18,34 @@ def ja_feito(caminho, campos_chave, chave):
     return any(tuple(r.get(c, "") for c in campos_chave) == tuple(chave) for r in le_csv(caminho))
 
 
-def grava_linha(caminho, campos, linha):
-    """Acrescenta uma linha; escreve o cabeçalho se o arquivo é novo."""
+def apara_cauda(caminho):
+    """Se a última linha ficou sem quebra (processo morto no meio da escrita), tira a cauda para `<arquivo>.parcial`
+    (nunca apaga) e deixa o CSV terminando em quebra, para a próxima linha não se colar nela."""
     caminho = Path(caminho)
+    if not caminho.exists() or caminho.stat().st_size == 0:
+        return
+    dados = caminho.read_bytes()
+    if dados.endswith(b"\n"):
+        return
+    corte = dados.rfind(b"\n") + 1
+    with open(caminho.with_suffix(caminho.suffix + ".parcial"), "ab") as f:
+        f.write(dados[corte:] + b"\n")
+    with open(caminho, "r+b") as f:
+        f.truncate(corte)
+
+
+def grava_linha(caminho, campos, linha):
+    """Acrescenta uma linha (uma só escrita, com flush e fsync); escreve o cabeçalho se o arquivo é novo."""
+    caminho = Path(caminho)
+    apara_cauda(caminho)
     novo = not caminho.exists() or caminho.stat().st_size == 0
     with open(caminho, "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=campos, extrasaction="ignore")
         if novo:
             w.writeheader()
         w.writerow({c: linha.get(c, "") for c in campos})
+        f.flush()
+        os.fsync(f.fileno())
 
 
 def sufixo_do_modelo(modelo):

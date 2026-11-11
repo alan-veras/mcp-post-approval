@@ -8,7 +8,7 @@ import time
 
 from instrumento import config
 from instrumento.coleta.diario import LOG, PASTA, PID, agora, anota, estado, grava_estado, pid_vivo
-from instrumento.coleta.fila import CODIGO_PARADA_INSTRUMENTO, FILA
+from instrumento.coleta.fila import CODIGO_PARADA_INSTRUMENTO, CODIGO_PARADA_PROVEDOR, FILA
 from instrumento.coleta.progresso import progresso, retrato
 from instrumento.coleta.verificacao import ambiente_da_coleta, problemas, versoes_atuais
 
@@ -42,6 +42,11 @@ def trabalha():
             if cod == CODIGO_PARADA_INSTRUMENTO:
                 anota(f"PARADO por problema de instrumento no passo {nome} (ver o fim do log); a decisão vira emenda "
                       "em EMENDAS.md antes de retomar")
+                return cod
+            if cod == CODIGO_PARADA_PROVEDOR:
+                anota(f"PARADO no passo {nome}: provedor ou rede indisponível além do tecto (ou erro permanente do provedor); "
+                      "nenhuma execução foi pulada. Veja o fim do log; para continuar do mesmo ponto: "
+                      "python3 experimento.py coleta retomar")
                 return cod
             faltam = [p for p in progresso() if p[0] == nome and p[1] < p[2]]
             if cod not in (0, 1) or faltam:
@@ -97,6 +102,10 @@ def principal(acao, primeiro_plano=False, intervalo=10):
         return inicia(primeiro_plano)
     if acao == "status":
         print(retrato())
+        return 0
+    if acao == "verificar":
+        from instrumento.coleta.progresso import verifica
+        print(verifica())
         return 0
     try:
         while True:

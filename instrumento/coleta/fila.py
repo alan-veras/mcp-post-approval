@@ -20,6 +20,7 @@ FIXADAS = {
 
 MODELOS = list(ordem.MODELOS)
 CODIGO_PARADA_INSTRUMENTO = 5
+CODIGO_PARADA_PROVEDOR = 6
 
 
 class Saida(NamedTuple):

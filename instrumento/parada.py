@@ -10,6 +10,11 @@ class Parada(Exception):
     """Problema de instrumento: a coleta para antes da próxima execução; a decisão vira emenda."""
 
 
+class ProvedorIndisponivel(Exception):
+    """Infraestrutura fora do ar além do tecto (8 falhas de provedor ou 6 h de espera) ou erro permanente do provedor
+    (401, 402, 403, 404): a coleta para na mesma execução e espera o Alan; nada é pulado."""
+
+
 def controle_inesperado(linha):
     """Texto do que um controle fez de inesperado (vazio se nada). Só registra."""
     celula = linha.get("celula")

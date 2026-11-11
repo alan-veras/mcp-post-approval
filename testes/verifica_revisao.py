@@ -192,10 +192,10 @@ def verifica_m2_m3_m4():
     try:
         with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
             csv = Path(tmp) / "o.csv"
-            fila[:] = [sem, pausa, pausa, pausa, pausa]
+            fila[:] = [sem, pausa, pausa, pausa, com]
             ultima = obediencia.roda_com_tentativas(tmp, "ensaio", item, None, csv)
-            ver("M4: provedor fora do ar depois de 3 novas tentativas: falha de provedor registrada, a coleta segue (não devolve None)",
-                ultima is not None and obediencia.pausou(ultima) and obediencia.ja_feita(csv, chave), str(ultima)[:150])
+            ver("M4: provedor fora do ar não ocupa a vaga: a execução é refeita até dar linha concluída",
+                ultima is not None and not obediencia.pausou(ultima) and obediencia.ja_feita(csv, chave), str(ultima)[:150])
             csv.unlink()
             fila[:] = [sem]
             obediencia.roda_com_tentativas(tmp, "ensaio", item, None, csv)  # 1 linha `sem` no CSV; vamos "retomar"

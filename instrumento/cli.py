@@ -11,7 +11,7 @@
        sonda:  a sonda dos gerenciadores npx e uvx, sem cliente
        filtros (ensaio): --componentes, --clientes cc,qw,cx --celulas --tecnicas --canais --modelos --reps N
   experimento.py analise [--ensaio]
-  experimento.py coleta iniciar|pausar|retomar|status|monitor [--primeiro-plano] [--intervalo S]
+  experimento.py coleta iniciar|pausar|retomar|status|verificar|monitor [--primeiro-plano] [--intervalo S]
 
 Só lê os argumentos e chama os módulos de instrumento/. O rodar grava em resultados/ e só roda com o arquivo
 TRAVA-COLETA; com --ensaio, grava em saida-local/, sem trava, para testar o instrumento. A ordem das execuções é a
@@ -24,8 +24,9 @@ from functools import partial
 
 from instrumento import clientes, config
 from instrumento.dominio import cargas, ordem
+from instrumento import execucao
 from instrumento.execucao import Recusa, Tarefa, percorre
-from instrumento.parada import Parada, motivo_de_parada
+from instrumento.parada import Parada, ProvedorIndisponivel, motivo_de_parada
 
 PARTES = ["parte1", "parte2", "sonda"]
 
@@ -60,7 +61,7 @@ def le_argumentos(argv=None):
     a = sub.add_parser("analise", help="gera o RELATORIO-<modo>.md")
     a.add_argument("--ensaio", action="store_true", help="lê saida-local/ em vez de resultados/")
     c = sub.add_parser("coleta", help="a coleta inteira: iniciar, pausar, retomar, status, monitor")
-    c.add_argument("acao", choices=["iniciar", "pausar", "retomar", "status", "monitor", "_trabalhar"])
+    c.add_argument("acao", choices=["iniciar", "pausar", "retomar", "status", "verificar", "monitor", "_trabalhar"])
     c.add_argument("--primeiro-plano", action="store_true")
     c.add_argument("--intervalo", type=int, default=10)
     ns = p.parse_args(argv)
@@ -104,6 +105,11 @@ def rodar(a):
         return config.CODIGO_PAUSA_PEDIDA
     except Recusa as erro:
         sys.exit(f"rodar recusado: {erro}")
+    except ProvedorIndisponivel as motivo:
+        print(f"PARADO-provedor: {motivo}. Nenhuma execução foi pulada; a mesma execução continua do mesmo ponto: "
+              "python3 experimento.py coleta retomar (ou decida por emenda em EMENDAS.md).", flush=True)
+        from instrumento.coleta.fila import CODIGO_PARADA_PROVEDOR
+        return CODIGO_PARADA_PROVEDOR
     except Parada as motivo:
         print(f"PARADO-instrumento: {motivo}. A decisão vira emenda em EMENDAS.md antes de retomar.", flush=True)
         from instrumento.coleta.fila import CODIGO_PARADA_INSTRUMENTO
@@ -168,7 +174,7 @@ def _rodar(a):
         return instalacao.sonda(aqui, a.modo, a.canais.split(",") if a.canais else None)
     if a.parte == "parte1":
         itens = filtra(ordem.ordem_parte1(a.reps or ordem.REPS_PARTE1), a)
-        return 1 if percorre([tarefa(aqui, a.modo, i) for i in itens], parar) else 0
+        return 1 if percorre([tarefa(aqui, a.modo, i) for i in itens], parar, execucao.conexao_local_falhou, aqui) else 0
     return rodar_parte2(aqui, a, parar, obediencia)
 
 

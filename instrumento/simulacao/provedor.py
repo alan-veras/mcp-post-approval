@@ -5,8 +5,10 @@ comando nunca o veem nem recebem a chave. A chave nunca é impressa, gravada em
 arquivo, posta em mensagem de erro nem passada a processo filho: todo texto de
 falha passa por `_limpa`, que a troca por `***`.
 """
+import http.client
 import json
 import os
+import socket
 import time
 import urllib.error
 import urllib.request
@@ -52,6 +54,41 @@ def chave_nvidia(arquivo_env=None):
             if valor:
                 return valor
     raise ErroProvedor(f"{VARIAVEL} ausente: defina a variável de ambiente")
+
+
+def resposta_inutilizavel(resp):
+    """Falha de infraestrutura, não resposta do modelo (regra mecânica da seção 7): 200 sem texto e sem chamada de
+    ferramenta, ou cortada por tamanho com argumentos de ferramenta que não decodificam. Texto sem ferramenta é do
+    modelo e passa. Devolve o motivo (vale repetir) ou ''."""
+    try:
+        escolha = resp["choices"][0]
+        msg = escolha.get("message") or {}
+        chamadas = msg.get("tool_calls") or []
+        conteudo = msg.get("content")
+        texto = conteudo if isinstance(conteudo, str) else "".join(
+            str(x.get("text", "")) if isinstance(x, dict) else str(x) for x in (conteudo or []))
+        if not chamadas and not texto.strip():
+            return "o provedor devolveu resposta vazia (sem texto e sem chamada de ferramenta)"
+        if escolha.get("finish_reason") == "length":
+            for c in chamadas:
+                json.loads(((c.get("function") or {}).get("arguments")) or "{}")
+    except (ValueError, TypeError, AttributeError, KeyError, IndexError):
+        return "o provedor devolveu resposta cortada (argumentos de ferramenta truncados)"
+    return ""
+
+
+def sonda(base_url=BASE_NVIDIA, tempo=5):
+    """Sem API e sem chave: só abre conexões TCP. 'provedor' se o endereço do provedor ou um segundo destino estável
+    (1.1.1.1:443) responde; 'rede' se nenhum responde (internet fora ou DNS fora)."""
+    partes = urlsplit(base_url)
+
+    def abre(host, porta):
+        try:
+            socket.create_connection((host, porta), timeout=tempo).close()
+            return True
+        except OSError:
+            return False
+    return "provedor" if abre(partes.hostname, partes.port or 443) or abre("1.1.1.1", 443) else "rede"
 
 
 class Provedor:
@@ -109,7 +146,7 @@ class Provedor:
             if e.code == 429 or e.code >= 500:
                 return None, texto
             raise ErroProvedor(texto) from None
-        except (urllib.error.URLError, OSError, TimeoutError) as e:
+        except (urllib.error.URLError, OSError, TimeoutError, http.client.HTTPException) as e:  # inclui IncompleteRead
             return None, self._limpa(f"erro de rede com o provedor: {type(e).__name__}: {e}")
         try:
             resp = json.loads(bruto)
@@ -121,6 +158,9 @@ class Provedor:
             if resp.get("error"):
                 raise ErroProvedor(self._limpa("o provedor devolveu erro: " + json.dumps(resp["error"])[:500]))
             return None, "o provedor devolveu resposta sem choices"
+        vazio = resposta_inutilizavel(resp)
+        if vazio:
+            return None, vazio
         return resp, ""
 
     def chat(self, corpo_chat):
