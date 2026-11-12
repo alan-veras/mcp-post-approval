@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this pre-registration, instrument or data, please cite the Zenodo deposit."
+title: "Pre-registration: what do MCP clients do after an approved server changes?"
+type: dataset
+authors:
+  - family-names: Veras
+    given-names: Alan
+    affiliation: "Universidade Federal do Ceará (UFC Russas)"
+doi: 10.5281/zenodo.24113558
+date-released: 2026-11-12
+repository-code: "https://github.com/alan-veras/mcp-post-approval"
+license: MIT
+keywords:
+  - MCP
+  - Model Context Protocol
+  - server approval
+  - AI agent security
+  - pre-registration
