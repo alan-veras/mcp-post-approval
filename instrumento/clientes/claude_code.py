@@ -56,8 +56,8 @@ ROTEIRO_FASE_A = {
     "pronto": r"mode on",
     "antes": [],
     "aprovacoes": [
-        ("servidor", r"New MCP server found", [("seleciona", r"all future MCP servers"), "enter"],
-         "Use this and all future MCP servers in this project"),
+        ("servidor", r"New MCP server found", [("seleciona", r"Use this MCP server$"), "enter"],
+         "Use this MCP server"),
         ("chamada", r"Do you want to proceed", [("seleciona", r"don't ask again"), "enter"],
          "Yes, and don't ask again for servidor-teste"),
     ],

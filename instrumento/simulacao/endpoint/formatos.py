@@ -41,12 +41,17 @@ def nomes_oferecidos(corpo, ferramentas=None):
     return nomes
 
 
-def namespace_de(corpo, nome):
-    """O grupo (namespace) em que o pedido oferece a ferramenta, ou None."""
-    for t in corpo.get("tools") or []:
-        if isinstance(t, dict) and t.get("type") == "namespace" and nome in nomes_oferecidos(corpo, t.get("tools") or []):
-            return t.get("name")
-    return None
+def namespace_de(corpo, nome, gemeo=False):
+    """O grupo (namespace) em que o pedido oferece a ferramenta, ou None. Com dois grupos que a oferecem (Codex, gêmeo), `gemeo`
+    escolhe o grupo cuja definição traz a marca do gêmeo; sem `gemeo`, o primeiro grupo sem a marca."""
+    achados = [t for t in corpo.get("tools") or []
+               if isinstance(t, dict) and t.get("type") == "namespace" and nome in nomes_oferecidos(corpo, t.get("tools") or [])]
+    marcados = [t for t in achados if MARCA_GEMEO in json.dumps(t)]
+    if gemeo and marcados:
+        return marcados[0].get("name")
+    livres = [t for t in achados if t not in marcados]
+    escolhidos = livres or achados
+    return escolhidos[0].get("name") if escolhidos else None
 
 
 def tem_resultado(formato, corpo):
@@ -100,3 +105,22 @@ def modelo_do_pedido(formato, corpo, caminho):
         return corpo["model"]
     achou = re.search(r"models/([^:/?]+)", urlsplit(caminho).path)
     return achou.group(1) if achou else MODELO
+
+
+MARCA_GEMEO = "marca_gemeo"
+
+
+def nomes_marcados_como_gemeo(corpo, ferramentas=None):
+    """Nomes das ferramentas cuja definição traz a propriedade opcional `marca_gemeo` (só o servidor gêmeo a anuncia): a
+    escolha do alvo não depende do tamanho do nome nem do dialeto do cliente."""
+    nomes = []
+    for t in (corpo.get("tools") or []) if ferramentas is None else ferramentas:
+        if not isinstance(t, dict):
+            continue
+        if isinstance(t.get("tools"), list):
+            nomes += nomes_marcados_como_gemeo(corpo, t["tools"])
+        elif MARCA_GEMEO in json.dumps(t):
+            nome = t.get("name") or (t.get("function") or {}).get("name")
+            if isinstance(nome, str):
+                nomes.append(nome)
+    return nomes

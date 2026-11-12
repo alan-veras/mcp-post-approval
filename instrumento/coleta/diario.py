@@ -1,5 +1,6 @@
 """O estado da coleta em disco: passos concluídos, o pid do processo e o log."""
 
+import fcntl
 import json
 import os
 from datetime import datetime
@@ -30,8 +31,27 @@ def estado():
 
 
 def grava_estado(e):
+    """Atômico: grava num temporário, fsync e renomeia; um kill -9 no meio nunca deixa estado.json cortado."""
     PASTA.mkdir(parents=True, exist_ok=True)
-    ESTADO.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp = ESTADO.with_suffix(".json.tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(json.dumps(e, ensure_ascii=False, indent=1))
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, ESTADO)
+
+
+def pega_trava(nome):
+    """flock exclusivo e sem espera em coleta/<nome>.lock; devolve o arquivo aberto (guarde-o até o fim do processo) ou
+    None se outro processo já o tem. O sistema solta a trava quando o processo morre, mesmo com kill -9."""
+    PASTA.mkdir(parents=True, exist_ok=True)
+    f = open(PASTA / f"{nome}.lock", "a")
+    try:
+        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        f.close()
+        return None
+    return f
 
 
 def pid_vivo():

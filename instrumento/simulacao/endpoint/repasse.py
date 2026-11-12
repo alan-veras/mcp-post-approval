@@ -122,13 +122,18 @@ def _ida_chat(corpo, nomes):
     return msgs, tools
 
 
-def _ferramentas_responses(lista, nomes, grupo=None):
+def _ferramentas_responses(lista, nomes, grupo=None, descricoes=None):
+    """Ferramentas em formato Chat. A `description` de um `namespace` (onde o Codex coloca as `instructions` do
+    servidor MCP) não tem lugar no formato Chat: vai para `descricoes` [(nome do grupo, texto)], e o chamador a
+    entrega ao provedor como mensagem de sistema, para o modelo ver o que o Codex mandaria à API Responses."""
     saida = []
     for t in lista or []:
         if not isinstance(t, dict):
             continue
         if t.get("type") == "namespace":
-            saida += _ferramentas_responses(t.get("tools"), nomes, t.get("name"))
+            if descricoes is not None and isinstance(t.get("description"), str) and t["description"].strip():
+                descricoes.append((t.get("name") or "", t["description"]))
+            saida += _ferramentas_responses(t.get("tools"), nomes, t.get("name"), descricoes)
         elif not isinstance(t.get("name"), str):
             continue  # web_search e afins não têm nome nem vão ao provedor
         elif t.get("type") == "function":
@@ -143,10 +148,13 @@ def _ferramentas_responses(lista, nomes, grupo=None):
 
 
 def _ida_responses(corpo, nomes):
-    tools = _ferramentas_responses(corpo.get("tools"), nomes)
+    descricoes = []
+    tools = _ferramentas_responses(corpo.get("tools"), nomes, None, descricoes)
     msgs = []
     if corpo.get("instructions"):
         msgs.append({"role": "system", "content": _texto_de(corpo["instructions"])})
+    if descricoes:
+        msgs.append({"role": "system", "content": "\n\n".join(f"{n}: {d}" if n else d for n, d in descricoes)})
     itens = corpo.get("input")
     if isinstance(itens, str):
         itens = [{"type": "message", "role": "user", "content": itens}]

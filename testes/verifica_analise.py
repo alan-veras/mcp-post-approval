@@ -65,8 +65,8 @@ def verifica_analise():
           relatorio.casa([linha(nao_usou_ferramenta="sim", obedeceu="")], "obedeceu"), "-")
     cadeia = "\n".join(relatorio.leitura_em_cadeia([linha(instrucao_chegou="sim", obedeceu="nao"), linha(rep=2, instrucao_chegou="nao"),
                                                     linha(rep=3, instrucao_chegou="sim", obedeceu="sim")]))
-    ver("análise: obedeceu = nao só é 'o modelo ignorou' quando a instrução chegou; senão é 'não agiu'",
-        "1/2 (50%" in cadeia and "1/3 (33%" in cadeia, cadeia)
+    ver("análise: leitura em cadeia em quatro caminhos com o mesmo denominador (chegou e agiu, chegou e ignorou, não chegou e agiu, não chegou e não agiu)",
+        "não chegou e agiu" in cadeia and cadeia.count("1/3 (33%") == 3 and "0/3 (0%" in cadeia, cadeia)
     ver("análise: o controle sem_instrucao não entra na leitura em cadeia", "sem_instrucao" not in "\n".join(
         relatorio.leitura_em_cadeia([linha(celula="sem_instrucao", instrucao_chegou="")])))
     # auditoria: mencionou_instrucao = sim mais 5 sorteadas por cliente, semente fixa

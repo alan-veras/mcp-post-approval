@@ -30,7 +30,11 @@ def pasta_de_trabalho():
 def guarda_evidencia(trabalho, destino):
     """Passa a pasta de trabalho para execucoes/..., onde a evidência fica."""
     destino = Path(destino)
-    shutil.rmtree(destino, ignore_errors=True)
+    if destino.exists():  # sobra de uma execução interrompida antes de gravar a linha: guarda de lado, nada é apagado
+        k = 1
+        while destino.with_name(f"{destino.name}-orfa{k}").exists():
+            k += 1
+        destino.rename(destino.with_name(f"{destino.name}-orfa{k}"))
     destino.parent.mkdir(parents=True, exist_ok=True)
     shutil.move(str(trabalho), str(destino))
 

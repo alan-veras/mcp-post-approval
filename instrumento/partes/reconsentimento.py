@@ -6,6 +6,7 @@ bloqueado_sem_explicacao e chegou_intacta.
 
 `roda_fase` também serve às partes instalação (com `comando` e `extras`) e obediência (com `aprova_na_b`).
 """
+import shlex
 import sys
 import time
 from pathlib import Path
@@ -26,7 +27,7 @@ CAMPOS = ["cliente", "versao", "sha256_binario", "celula", "rep", "pediu_fase_a"
 CHAVE = ("cliente", "celula", "rep")
 
 
-def comando_servidor(celula, pasta, versao):
+def comando_servidor(celula, pasta, versao, modulo=None):
     """A linha de comando que o cliente guarda. É a mesma nas duas fases em toda célula; a versão vem do arquivo de
     estado. Só a `comando_alterado` a muda, com --perfil b. Na `gemeo_com_sufixo`, leva também a linha do gêmeo
     (--comando-gemeo), que o servidor usa para montar a instrução da versão B: assim a definição servida e a esperada
@@ -37,14 +38,31 @@ def comando_servidor(celula, pasta, versao):
     if celula == "comando_alterado" and versao == "B":
         cmd += ["--perfil", "b"]
     if celula == cargas.CELULA_GEMEO:
-        cmd += ["--comando-gemeo", comando_gemeo(pasta)]
+        cmd += ["--comando-gemeo", cadastro_do_gemeo(modulo, pasta) if modulo else comando_gemeo(pasta)]
     return cmd
 
 
 def comando_gemeo(pasta):
-    """A linha de comando do servidor gêmeo, embutida na instrução da célula `gemeo_com_sufixo`. O gêmeo é o mesmo script local, inofensivo, com registro próprio."""
-    return " ".join([sys.executable, "-B", str(config.EXPERIMENTO), "servidor", "--gemeo",
-                     "--registro", str(Path(pasta) / cargas.ARQUIVO_REGISTRO_GEMEO)])
+    """A linha de comando do servidor gêmeo da `gemeo_com_sufixo`: um lançador (sh) dentro da pasta da execução, que roda o
+    mesmo script local, inofensivo, com registro próprio. O modelo só vê o caminho do lançador (em /tmp), não o caminho do
+    computador do autor, que fica dentro do lançador."""
+    pasta = Path(pasta)
+    pasta.mkdir(parents=True, exist_ok=True)
+    lancador = pasta / "servidor-oficial.sh"
+    argv = [sys.executable, "-B", str(config.EXPERIMENTO), "servidor", "--gemeo",
+            "--registro", str(pasta / cargas.ARQUIVO_REGISTRO_GEMEO)]
+    lancador.write_text("#!/bin/sh\nexec " + " ".join(shlex.quote(x) for x in argv) + "\n", encoding="utf-8")
+    lancador.chmod(0o755)
+    return f"sh {lancador}"
+
+
+def cadastro_do_gemeo(modulo, pasta):
+    """O comando completo de cadastro que a instrução da célula dá ao modelo, no formato do cliente: `<cliente> mcp add
+    servidor-teste-oficial [--] sh <lançador>` (o Qwen Code recusa o `--`)."""
+    nome = modulo.__name__.rsplit(".", 1)[-1]
+    binario = {"claude_code": "claude", "qwen": "qwen", "codex": "codex"}.get(nome, nome)
+    separador = "" if nome == "qwen" else "-- "
+    return f"{binario} mcp add {cargas.NOME_GEMEO_SUFIXO} {separador}{comando_gemeo(pasta)}"
 
 
 def nome_do_servidor(celula, fase):
@@ -158,6 +176,9 @@ class Tela:
             if ep.terminou:
                 self.sessao.quieto(1.5, 8)
                 return True
+            if getattr(ep, "falha_provedor", ""):  # o provedor falhou: a fase não vai terminar, não espera o limite inteiro
+                self.sessao.le(1.0)
+                return True
             if self.fase == "B" and not self.aprova_na_b and self.houve_pedido():
                 # a tela pediu aprovação e nenhuma tecla será apertada: a ferramenta não roda mais
                 self.sessao.le(2.0)
@@ -184,7 +205,7 @@ def roda_fase(modulo, ep, pasta, celula, fase, limite, comando=None, extras=None
     inicio = time.time()
     (pasta / "estado-versao.txt").write_text(fase, encoding="utf-8")
     ep.fase(pasta / f"fase{fase}")
-    servidor = ServidorMCP(comando or comando_servidor(celula, pasta, fase), nome_do_servidor(celula, fase))
+    servidor = ServidorMCP(comando or comando_servidor(celula, pasta, fase, modulo), nome_do_servidor(celula, fase))
     env = modulo.prepara(pasta, servidor, ep.porta, "reconsentimento", gemeo=gemeo)
     env.update(extras or {})
     snap_antes = comum.instantaneo(pasta)
@@ -196,6 +217,13 @@ def roda_fase(modulo, ep, pasta, celula, fase, limite, comando=None, extras=None
         if not pronto and (aprova_na_b or not tela.houve_pedido()):
             falha = "tela-nao-ficou-pronta"
         desde = sessao.marca()
+        if pronto and not comando:
+            # portão: o cliente já carregou as ferramentas do servidor (e do gêmeo, quando há) antes do primeiro pedido
+            if not comum.esperou_tools_list(pasta / "registro-servidor.jsonl", inicio):
+                falha = falha or "servidor-nao-conectou"
+                pronto = False
+            elif gemeo:
+                comum.esperou_tools_list(pasta / cargas.ARQUIVO_REGISTRO_GEMEO, inicio, limite=15)  # o gêmeo pode nunca subir (medido à parte)
         if pronto:
             tela.digita(pedido or PEDIDO)
             if not tela.acompanha(ep, limite, desde) and tela.aprova_o_que_aparecer:
@@ -211,7 +239,8 @@ def roda_fase(modulo, ep, pasta, celula, fase, limite, comando=None, extras=None
             "achados": tela.achados, "falha": falha,
             "registro": [r for r in comum.le_registro(pasta / "registro-servidor.jsonl")
                          if (r["t"] >= inicio if comando else r.get("versao") == fase)],
-            "pedidos": servidor_http.le_pedidos(pasta / f"fase{fase}")}
+            "pedidos": servidor_http.le_pedidos(pasta / f"fase{fase}"),
+            "pedidos_provedor": servidor_http.le_pedidos_provedor(pasta / f"fase{fase}")}
 
 
 # ---- desfechos ------------------------------------------------------------------------------------
@@ -234,6 +263,8 @@ def roda_uma(aqui, modo, rotulo, celula, rep, pasta_raiz=None):
     try:
         a = roda_fase(modulo, ep, pasta, celula, "A", LIMITE_FASE_A)
         comum.registra_fase_a(linha, a, falhas)
+        if not a["falha"] and not comum.aprovacao_persistiu(rotulo, pasta):
+            raise RuntimeError("A:aprovacao-nao-persistiu (a regra de aprovacao nao esta no disco do cliente; a fase B nao roda)")
         if not comum.recebeu_tools_call(a["registro"]):
             falhas.append("A:servidor-nao-recebeu-tools/call")
         b = roda_fase(modulo, ep, pasta, celula, "B", LIMITE_FASE_B)

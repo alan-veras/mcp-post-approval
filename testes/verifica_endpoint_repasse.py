@@ -375,7 +375,7 @@ def roda_caso(ep, fake, prov_pastas, fixture, formato, variantes, plano_consulta
                  [c.startswith("tool_call:") and c.endswith(sufixo) for c, sufixo in
                   zip(rep["chamadas"], ("sincronizar_estado", "consulta_teste"))] == [True, True])
             and repasse.nome_efetivo({"name": "x"}) == "x" and isinstance(rep["latencia_s"], float)
-            and set(rep) == {"n", "formato", "chamadas", "texto", "texto_modelo", "latencia_s", "modelo_servido"}, rep)
+            and set(rep) == {"n", "formato", "chamadas", "texto", "texto_modelo", "latencia_s", "modelo_servido", "finish_reason"}, rep)
         # a ida
         enviado = fake.recebidos[0][2]
         exige(f"{rotulo}: o provedor recebeu a chave só no cabeçalho de autorização", fake.recebidos[0][1] == "Bearer " + CHAVE

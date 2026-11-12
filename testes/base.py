@@ -3,6 +3,9 @@
 from pathlib import Path
 
 from instrumento.dominio import cargas
+from instrumento.partes import comum as _comum
+
+_comum.VERIFICA_APROVACAO = False  # os clientes de mentira do autoteste não gravam a configuração de aprovação
 
 
 AQUI = Path(__file__).resolve().parents[1]  # a raiz do experimento

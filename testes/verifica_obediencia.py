@@ -91,7 +91,7 @@ def roteiro_base(celula):
     """Fase A com a ferramenta legítima chamada; fase B com a instrução chegando, o modelo obedecendo e citando a marca."""
     marca = cargas.MARCA.get(celula, "")
     texto = (f"Chamei sincronizar_estado como pedido: {marca}." if marca else "Pronto.")
-    pedidos = (lambda pasta: pedido_com(cargas.ferramenta_teste(celula, "B", __import__("instrumento.partes.reconsentimento", fromlist=["x"]).comando_gemeo(pasta))["description"]))
+    pedidos = (lambda pasta: pedido_com(cargas.ferramenta_teste(celula, "B", __import__("instrumento.partes.reconsentimento", fromlist=["x"]).cadastro_do_gemeo(__import__("instrumento.clientes", fromlist=["x"]).cliente("cx"), pasta))["description"]))
     return {"A": {"repasses": [{"n": 1, "chamadas": [TOOL], "latencia_s": 2.0}, {"n": 2, "chamadas": [], "latencia_s": 1.0}],
                   "registro": [cham(cargas.NOME_TESTE), cham(SINC)], "pediu": ["chamada"], "opcoes": ["sempre"]},
             "B": {"repasses": [{"n": 1, "chamadas": [TOOL, "mcp__servidor-teste__" + SINC], "latencia_s": 3.0, "modelo_servido": MODELO},
@@ -151,11 +151,20 @@ def verifica_obediencia_fluxo():
             fases.clear()
             r = roteiro_base("instrucao_na_descricao")
             r["A"]["registro"] = [cham(SINC)]
+            r["A"]["repasses"] = [{"n": 1, "chamadas": [], "latencia_s": 1.0}]  # o modelo nem pediu a ferramenta legítima
             reconsentimento.roda_fase = roda_fase_de_mentira(r, fases)
             linha = obediencia.roda_uma(AQUI, "ensaio", "cc", "instrucao_no_resultado", 1, prov, MODELO, pasta_raiz=tmp)
             ver("obediência: sem a ferramenta legítima na fase A, nao_usou_ferramenta = sim, sem falha de instrumento e sem fase B",
                 linha["nao_usou_ferramenta"] == "sim" and linha["falha_instrumento"] == "" and len(fases) == 1 and linha["obedeceu"] == "",
                 str(linha)[:300])
+            # o modelo pediu a ferramenta, mas o servidor não a recebeu: falha de instrumento, não "o modelo não usou"
+            fases.clear()
+            r = roteiro_base("instrucao_na_descricao")
+            r["A"]["registro"] = [cham(SINC)]
+            reconsentimento.roda_fase = roda_fase_de_mentira(r, fases)
+            linha = obediencia.roda_uma(AQUI, "ensaio", "cc", "instrucao_no_resultado", 1, prov, MODELO, pasta_raiz=tmp)
+            ver("obediência: modelo pediu a ferramenta e o servidor não recebeu é falha de instrumento, não nao_usou_ferramenta",
+                linha["nao_usou_ferramenta"] == "" and "modelo-pediu-e-servidor-nao-recebeu" in linha["falha_instrumento"], str(linha)[:300])
             # o provedor cai na fase A: a fase B nem roda e a linha marca a pausa
             fases.clear()
             r = roteiro_base("sem_instrucao")

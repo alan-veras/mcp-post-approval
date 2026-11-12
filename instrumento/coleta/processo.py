@@ -1,5 +1,6 @@
 """O processo da coleta: o laço da fila, o início em segundo plano e as ações da linha de comando."""
 
+import hashlib
 import os
 import signal
 import subprocess
@@ -7,16 +8,41 @@ import sys
 import time
 
 from instrumento import config
-from instrumento.coleta.diario import LOG, PASTA, PID, agora, anota, estado, grava_estado, pid_vivo
+from instrumento.coleta.diario import LOG, PASTA, PID, agora, anota, estado, grava_estado, pega_trava, pid_vivo
 from instrumento.coleta.fila import CODIGO_PARADA_INSTRUMENTO, CODIGO_PARADA_PROVEDOR, FILA
 from instrumento.coleta.progresso import progresso, retrato
 from instrumento.coleta.verificacao import ambiente_da_coleta, problemas, versoes_atuais
 
 
+def sha_emendas():
+    f = config.RAIZ / "EMENDAS.md"
+    return hashlib.sha256(f.read_bytes()).hexdigest() if f.exists() else ""
+
+
+def confere_emendas():
+    """Depois de uma parada que exige decisão (instrumento ou provedor além do tecto), nada recomeça sem EMENDAS.md diferente."""
+    parada = estado().get("parada_decisao")
+    if parada and parada.get("emendas_sha256") == sha_emendas():
+        sys.exit("coleta: parou em " + parada.get("quando", "?") + " (" + parada.get("motivo", "?") + ") e o EMENDAS.md não mudou "
+                 "desde então. Registre a decisão em EMENDAS.md e commite antes de retomar.")
+
+
+def grava_parada(nome, motivo):
+    e = estado()
+    e["parada_decisao"] = {"quando": agora(), "passo": nome, "motivo": motivo, "emendas_sha256": sha_emendas()}
+    grava_estado(e)
+
+
 def trabalha():
     """O laço da fila (roda no processo destacado, ou no terminal com --primeiro-plano)."""
+    trava = pega_trava("coleta")  # fica aberta até o fim do processo
+    if trava is None:
+        anota("RECUSADO: já existe uma coleta em curso (trava coleta/coleta.lock)")
+        return 7
+    PASTA.mkdir(parents=True, exist_ok=True)
     PID.write_text(str(os.getpid()))
     e = estado()
+    e.pop("parada_decisao", None)  # chegou aqui: a emenda foi conferida em inicia()
     e["historico"].append({"inicio": agora(), "versoes": versoes_atuais()})
     grava_estado(e)
     try:
@@ -32,18 +58,34 @@ def trabalha():
             if erros:
                 anota("PARADO: " + " | ".join(erros))
                 return 2
+            # um `rodar` órfão (a coleta anterior morreu com kill -9 e o filho seguiu) segura rodar.lock: espera ele acabar
+            while True:
+                orfao = pega_trava("rodar")
+                if orfao:
+                    orfao.close()
+                    break
+                if config.PAUSA.exists():
+                    anota("PAUSADO-pedido enquanto esperava o rodar anterior")
+                    return config.CODIGO_PAUSA_PEDIDA
+                anota("esperando um rodar anterior (órfão) terminar; ele segue a fila e pausa com PAUSAR")
+                time.sleep(30)
             anota(f"passo {nome}: python3 experimento.py {' '.join(argv)}")
             with open(LOG, "a", encoding="utf-8") as f:
                 cod = subprocess.run([sys.executable, str(config.EXPERIMENTO)] + argv, cwd=config.RAIZ,
                                      env=ambiente_da_coleta(), stdout=f, stderr=subprocess.STDOUT).returncode
+            if cod == 7:
+                anota(f"RECUSADO no passo {nome}: outro rodar está gravando; nada foi feito")
+                return cod
             if cod == config.CODIGO_PAUSA_PEDIDA:
                 anota(f"PAUSADO-pedido no passo {nome}; retome com: python3 experimento.py coleta retomar")
                 return cod
             if cod == CODIGO_PARADA_INSTRUMENTO:
+                grava_parada(nome, "instrumento")
                 anota(f"PARADO por problema de instrumento no passo {nome} (ver o fim do log); a decisão vira emenda "
                       "em EMENDAS.md antes de retomar")
                 return cod
             if cod == CODIGO_PARADA_PROVEDOR:
+                grava_parada(nome, "provedor")
                 anota(f"PARADO no passo {nome}: provedor ou rede indisponível além do tecto (ou erro permanente do provedor); "
                       "nenhuma execução foi pulada. Veja o fim do log; para continuar do mesmo ponto: "
                       "python3 experimento.py coleta retomar")
@@ -63,8 +105,11 @@ def trabalha():
 
 
 def inicia(primeiro_plano):
-    if pid_vivo():
-        sys.exit(f"coleta: já está rodando (pid {pid_vivo()}); use: python3 experimento.py coleta monitor")
+    confere_emendas()
+    trava = pega_trava("coleta")
+    if trava is None or pid_vivo():
+        sys.exit(f"coleta: já está rodando (pid {pid_vivo() or '?'}); use: python3 experimento.py coleta monitor")
+    trava.close()   # só a checagem rápida; a trava de verdade é a do trabalha()
     if config.PAUSA.exists():
         sys.exit("coleta: existe PAUSAR; para continuar use: python3 experimento.py coleta retomar")
     e = estado()

@@ -64,6 +64,40 @@ def le_registro(caminho):
         return []
 
 
+VERIFICA_APROVACAO = True
+
+
+def esperou_tools_list(caminho, desde, limite=30, passo=0.5):
+    """Espera (até `limite` s) o servidor receber um `tools/list` depois de `desde`: o cliente carregou as ferramentas, e a
+    primeira mensagem ao modelo já leva a definição da fase. Devolve True se viu."""
+    import time
+    fim = time.time() + limite
+    while True:
+        if any(r.get("direcao") == "recebida" and (r.get("mensagem") or {}).get("method") == "tools/list" and r.get("t", 0) >= desde
+               for r in le_registro(caminho)):
+            return True
+        if time.time() >= fim:
+            return False
+        time.sleep(passo)
+
+
+def aprovacao_persistiu(rotulo, pasta):
+    """A aprovação persistente da fase A está no disco do cliente? Confere a regra gravada (servidor mais ferramenta), não o
+    texto do menu: se o menu mudar e a tecla errada for apertada, a fase B pediria aprovação em todas as células."""
+    if not VERIFICA_APROVACAO:  # só o autoteste desliga (os clientes de mentira não gravam configuração)
+        return True
+    pasta = Path(pasta)
+    alvo = "mcp__servidor-teste__consulta_teste"
+    try:
+        if rotulo == "cc":
+            return alvo in ((json.loads((pasta / "projeto/.claude/settings.local.json").read_text()).get("permissions") or {}).get("allow") or [])
+        if rotulo == "qw":
+            return alvo in ((json.loads((pasta / "home/.qwen/settings.json").read_text()).get("permissions") or {}).get("allow") or [])
+        return re.search(r'approval_mode\s*=\s*"approve"', (pasta / "home/.codex/config.toml").read_text()) is not None
+    except (OSError, ValueError):
+        return False
+
+
 def recebeu_tools_call(registro):
     """O servidor recebeu ao menos um `tools/call` (a ferramenta rodou)?"""
     return any(r["direcao"] == "recebida" and r["mensagem"].get("method") == "tools/call" for r in registro)

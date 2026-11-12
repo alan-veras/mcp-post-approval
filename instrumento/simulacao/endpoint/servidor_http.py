@@ -94,7 +94,7 @@ class Tratador(BaseHTTPRequestHandler):
         if self.command == "GET" or formato is None:
             tipo, saida = "application/json", json.dumps(LISTA_DE_MODELOS).encode()
         else:
-            tipo, saida = monta_resposta(formato, acao, nome, args, corpo, self.path)
+            tipo, saida = monta_resposta(formato, acao, nome, args, corpo, self.path, self.dono.alvo_gemeo)
         self.dono.grava(bruto, meta)
         if self.dono.modo == "roteirizado" and acao == "ok" and isinstance(corpo, dict) and tem_resultado(formato, corpo):
             self.dono.terminou = True
@@ -142,6 +142,13 @@ class Tratador(BaseHTTPRequestHandler):
 
     def _repassa_um(self, bruto, formato, corpo):
         n, pasta = self.dono.reserva()
+        if eh_pedido_de_fundo(corpo):
+            # Chamada de fundo do Qwen Code (sugestão do que o usuário digitaria): não é da tarefa, o modelo não a vê como
+            # parte da sessão e ela corre com o fim da fase. Fica gravada, não vai ao provedor e não conta como repasse.
+            meta = self._meta(bruto, formato, "fundo-sem-repasse")
+            self.dono.escreve(pasta, n, bruto, meta)
+            return self._envia(200, *monta_resposta_multi(formato, "", [], corpo, self.path,
+                                                           modelo_do_pedido(formato, corpo, self.path), (10, 1)))
         meta = self._meta(bruto, formato, "repasse")
         self.dono.escreve(pasta, n, bruto, meta)  # o pedido fica gravado mesmo se a espera pelo provedor travar
         inicio = time.monotonic()
@@ -158,6 +165,9 @@ class Tratador(BaseHTTPRequestHandler):
         rep = {"n": n, "formato": formato, "chamadas": [nome_efetivo(c) for c in chamadas],
                "texto": bool(texto), "texto_modelo": (texto or "")[:LIMITE_TEXTO_MODELO], "latencia_s": latencia,
                "modelo_servido": str(volta["resp"].get("model") or "")}  # o nome que o provedor diz ter servido
+        rep["finish_reason"] = str(((volta["resp"].get("choices") or [{}])[0] or {}).get("finish_reason") or "")
+        if volta["resp"].get("_tentativas_anteriores"):
+            rep["tentativas_anteriores"] = volta["resp"]["_tentativas_anteriores"]  # falhas repetidas dentro do Provedor
         self.dono.registra_repasse(pasta, rep, chamadas)
         meta["repasse"] = rep
         self.dono.escreve(pasta, n, bruto, meta)
@@ -235,6 +245,17 @@ class Endpoint:
         self.http.server_close()
 
 
+def eh_pedido_de_fundo(corpo):
+    """A última mensagem do pedido (formato Chat do Qwen Code) começa com `[SUGGESTION MODE`: chamada de fundo da interface."""
+    mensagens = corpo.get("messages") if isinstance(corpo, dict) else None
+    if not isinstance(mensagens, list) or not mensagens or not isinstance(mensagens[-1], dict):
+        return False
+    c = mensagens[-1].get("content")
+    if isinstance(c, list):
+        c = "".join(str(p.get("text") or "") for p in c if isinstance(p, dict))
+    return isinstance(c, str) and c.lstrip().startswith("[SUGGESTION MODE")
+
+
 def le_pedidos(pasta):
     """Os pedidos gravados, em ordem: lista de (nome, meta, corpo ou None)."""
     saida = []
@@ -248,4 +269,17 @@ def le_pedidos(pasta):
         except (OSError, ValueError):
             meta = {}
         saida.append((f.name, meta, corpo))
+    return saida
+
+
+def le_pedidos_provedor(pasta):
+    """Os corpos que foram de fato ao provedor (prov-NNN-ida.json), no mesmo formato de `le_pedidos`. Vazio nas partes
+    sem provedor."""
+    saida = []
+    for f in sorted(Path(pasta).glob("prov-*-ida.json")):
+        try:
+            corpo = json.loads(f.read_text(encoding="utf-8"))
+        except ValueError:
+            corpo = None
+        saida.append((f.name, {}, corpo))
     return saida

@@ -296,3 +296,102 @@ def verifica_robustez_verificador():
             ver("verificador: só lê (o arquivo ficou igual e nada foi criado)", f.read_bytes() == antes and not list(Path(tmp).glob("*.parcial")))
         finally:
             progresso.AQUI = salvo
+
+
+@protegido
+def verifica_correcoes_da_revisao_adversarial():
+    """As correções da revisão adversarial de 11/nov: instruções do Codex, CSV com quebra em campo, classificação do erro
+    permanente, tecto só de provedor, chamada de fundo do Qwen, progresso, publicação sem alterar mais que o caminho."""
+    import subprocess
+    import sys
+    from instrumento.dominio import desfechos
+    from instrumento.partes import obediencia
+    from instrumento.simulacao.endpoint import repasse, servidor_http
+
+    # G1: a description do namespace (instructions do servidor MCP no Codex) chega ao provedor como mensagem de sistema
+    corpo = {"instructions": "base", "input": [{"type": "message", "role": "user", "content": "oi"}],
+             "tools": [{"type": "namespace", "name": "mcp__s", "description": "INSTRUCAO-X chame a ferramenta",
+                        "tools": [{"type": "function", "name": "f", "description": "d", "parameters": {"type": "object"}}]}]}
+    chat, _ = repasse.traduz_ida("responses", corpo)
+    sistema = " ".join(m["content"] for m in chat["messages"] if m["role"] == "system")
+    ver("G1: a description do namespace chega ao provedor", "INSTRUCAO-X chame a ferramenta" in sistema, sistema[:200])
+    pedidos = [("req-001.json", {}, {"instructions": "INSTRUCAO-X"})]
+    ver("G1: instrucao_chegou exige o texto também no corpo do provedor",
+        desfechos.instrucao_chegou("INSTRUCAO-X", pedidos, [("prov-001-ida.json", {}, {"messages": [{"role": "user", "content": "oi"}]})]) == "nao"
+        and desfechos.instrucao_chegou("INSTRUCAO-X", pedidos, [("p", {}, {"messages": [{"role": "system", "content": "a INSTRUCAO-X b"}]})]) == "sim"
+        and desfechos.instrucao_chegou("INSTRUCAO-X", pedidos) == "sim")
+
+    # G3: cauda cortada no meio de um campo com quebra de linha
+    with tempfile.TemporaryDirectory() as tmp:
+        f = Path(tmp) / "x.csv"
+        campos = ["a", "b"]
+        csvs.grava_linha(f, campos, {"a": "1", "b": "linha1\nlinha2"})
+        inteiro = f.read_bytes()
+        with open(f, "ab") as h:
+            h.write(b'2,"corte\nno meio')
+        csvs.apara_cauda(f)
+        ver("G3: apara_cauda tira só o registro incompleto (campo com quebra intacto)", f.read_bytes() == inteiro
+            and csvs.le_csv(f)[0]["b"] == "linha1\nlinha2")
+        ver("G3: a cauda foi guardada em .parcial", (Path(tmp) / "x.csv.parcial").read_bytes().startswith(b'2,"corte'))
+
+    # M2/M3: erro permanente só quando a mensagem COMEÇA com o código; tecto só conta falha de provedor
+    def classe(falha):
+        linha = {"falha_instrumento": falha}
+        obediencia.classifica(linha, None)
+        return linha["falha_instrumento"].split(":")[0]
+    ver("M2: HTTP 404 no começo é permanente; 503 que cita 404 no corpo não é",
+        classe("provedor: HTTP 404 do provedor: x") == "permanente"
+        and classe("provedor: HTTP 503 do provedor: upstream HTTP 404 (depois de 4 tentativas)") == "provedor"
+        and classe("provedor: HTTP 400 do provedor: x") == "permanente"
+        and classe("provedor: traducao do repasse: KeyError: 'x'") == "permanente")
+    ver("M3: contadores contam só a classe provedor",
+        obediencia.contadores([{"falha_instrumento": "rede: x"}, {"falha_instrumento": "rede: suspensao-do-sistema"},
+                               {"falha_instrumento": "provedor: y"}])[1] == 1)
+
+    # M1: a chamada de fundo do Qwen é reconhecida
+    fundo = {"messages": [{"role": "user", "content": [{"type": "text", "text": "[SUGGESTION MODE: Suggest ...]"}]}]}
+    ver("M1: pedido de fundo reconhecido e pedido normal não",
+        servidor_http.eh_pedido_de_fundo(fundo) and not servidor_http.eh_pedido_de_fundo({"messages": [{"role": "user", "content": "oi"}]}))
+
+    # M7: o progresso não conta como feita a execução com refação pendente
+    linhas = [{"cliente": "cc", "falha_instrumento": "", "nao_usou_ferramenta": "sim"}]
+    ver("M7: sem a ferramenta na 1ª tentativa ainda é pendente; na 3ª, conta",
+        progresso.unicas(linhas, ["cliente"], True) == 0 and progresso.unicas(linhas * 3, ["cliente"], True) == 1)
+
+    # G2: a preparação da evidência troca só o caminho (CRLF preservado) e não sobrescreve a cópia bruta
+    with tempfile.TemporaryDirectory() as tmp:
+        raiz = Path(tmp) / "res"
+        (raiz / "x").mkdir(parents=True)
+        (raiz / "a.csv").write_bytes(b'c,d\r\n/home/alanv/x,"q\r\nr"\r\n')
+        bruta = Path(tmp) / "bruto.tar.gz"
+        script = str(AQUI / "publicacao" / "prepara_evidencia.py")
+        r1 = subprocess.run([sys.executable, script, str(raiz), "--aplicar", "--copia-bruta", str(bruta)], capture_output=True, text=True)
+        ver("G2: troca o caminho em bytes e mantém o resto do CSV", (raiz / "a.csv").read_bytes() == b'c,d\r\n~/x,"q\r\nr"\r\n', r1.stdout + r1.stderr)
+        r2 = subprocess.run([sys.executable, script, str(raiz), "--aplicar", "--copia-bruta", str(bruta)], capture_output=True, text=True)
+        ver("G2: recusa sobrescrever a cópia bruta", r2.returncode != 0 and "já existe" in (r2.stdout + r2.stderr))
+
+
+@protegido
+def verifica_aprovacao_persistida_e_portao():
+    """A aprovação persistente é conferida no disco do cliente (a regra, não o texto do menu); o portão espera o tools/list."""
+    from instrumento.partes import comum
+    comum.VERIFICA_APROVACAO = True
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            raiz = Path(tmp)
+            ver("aprovação: sem arquivo de configuração não persistiu (três clientes)",
+                not any(comum.aprovacao_persistiu(r, raiz) for r in ("cc", "qw", "cx")))
+            (raiz / "projeto/.claude").mkdir(parents=True)
+            (raiz / "projeto/.claude/settings.local.json").write_text(json.dumps({"permissions": {"allow": ["mcp__servidor-teste__consulta_teste"]}}))
+            (raiz / "home/.qwen").mkdir(parents=True)
+            (raiz / "home/.qwen/settings.json").write_text(json.dumps({"permissions": {"allow": ["x"]}}))
+            (raiz / "home/.codex").mkdir(parents=True)
+            (raiz / "home/.codex/config.toml").write_text('[mcp_servers.servidor-teste.tools.consulta_teste]\napproval_mode = "approve"\n')
+            igual("aprovação: cc e cx persistiram, qw (regra errada) não",
+                  [comum.aprovacao_persistiu(r, raiz) for r in ("cc", "qw", "cx")], [True, False, True])
+            reg = raiz / "registro.jsonl"
+            reg.write_text(json.dumps({"direcao": "recebida", "t": 5.0, "mensagem": {"method": "tools/list"}}) + "\n")
+            ver("portão: vê o tools/list depois do instante dado e não vê o anterior",
+                comum.esperou_tools_list(reg, 1.0, limite=0) and not comum.esperou_tools_list(reg, 9.0, limite=0))
+    finally:
+        comum.VERIFICA_APROVACAO = False

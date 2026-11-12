@@ -113,7 +113,7 @@ def verifica_clientes():
             ver(f"clientes/{rotulo}: roteiro com pronto, antes e aprovacoes",
                 isinstance(rf.get("pronto"), str) and isinstance(rf.get("antes"), list) and isinstance(rf.get("aprovacoes"), list))
             ver(f"clientes/{rotulo}: a aprovação da fase A é a opção persistente (sempre permitir ou equivalente)",
-                rf["aprovacoes"] and all(re.search(r"always|all future|don't ask again", a[3], re.I) for a in rf["aprovacoes"]), str(rf["aprovacoes"]))
+                rf["aprovacoes"] and all(re.search(r"always|all future|don't ask again|Use this MCP server", a[3], re.I) for a in rf["aprovacoes"]), str(rf["aprovacoes"]))
             ver(f"clientes/{rotulo}: padrões de aprovação do servidor e da chamada",
                 set(getattr(m, "PADROES_APROVACAO", {})) == {"servidor", "chamada"})
             for modo in ("entrega", "reconsentimento"):

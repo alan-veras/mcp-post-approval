@@ -8,3 +8,6 @@ saida-local/
 # resultados; revoga a nota de 4/nov)
 TRAVA-COLETA
 PAUSAR
+*.env
+.env.*
+*.tar.gz

@@ -26,7 +26,8 @@ GRUPOS = [
     verifica_revisao.verifica_dica_do_codex_nao_e_rede_externa,
     verifica_robustez.verifica_provedor_resposta_inutilizavel, verifica_robustez.verifica_robustez_roda_com_tentativas,
     verifica_robustez.verifica_robustez_suspensao_e_csv, verifica_robustez.verifica_robustez_parte1_conexao_local,
-    verifica_robustez.verifica_robustez_verificador,
+    verifica_robustez.verifica_robustez_verificador, verifica_robustez.verifica_correcoes_da_revisao_adversarial,
+    verifica_robustez.verifica_aprovacao_persistida_e_portao,
     verifica_regras.verifica_regras, verifica_higiene.verifica_higiene,
 ]
 

@@ -23,7 +23,7 @@ from instrumento.simulacao.endpoint import formatos, servidor_http
 
 CELULA = "gemeo_invisivel"
 CAMPOS = ["cliente", "versao", "sha256_binario", "rep", "pediu_fase_a", "opcao_aprovada", "modelo_pediu",
-          "nomes_distintos", "gemeo_nao_distinguido", "rodou_sem_aviso", "pediu_aprovacao", "bloqueado_sem_explicacao", "original_recebeu",
+          "nomes_distintos", "gemeo_conectou", "tratou_como_distinto", "nome_exibido_igual", "gemeo_nao_distinguido", "rodou_sem_aviso", "pediu_aprovacao", "bloqueado_sem_explicacao", "original_recebeu",
           "duracao_s", "rede_bloqueada", "falha_instrumento", "evidencia"]
 CHAVE = ("cliente", "rep")
 
@@ -43,8 +43,12 @@ def nomes_distintos(pedidos, tela=""):
             nomes |= set(re.findall(r"mcp__[\w-]+__" + formatos.SUFIXO_FERRAMENTA + r"\w*", json.dumps(corpo)))
             if len(nomes) >= 2:
                 return True
+            espacos = {t["name"] for t in corpo.get("tools") or [] if isinstance(t, dict) and t.get("type") == "namespace"
+                       and isinstance(t.get("name"), str) and t["name"].startswith("mcp__servidor_teste")}
+            if len(espacos) >= 2:  # Codex: dois grupos de ferramentas MCP, um por servidor
+                return True
     base = re.escape(cargas.NOME_SERVIDOR_BASE)
-    return bool(re.search(base + "[" + cargas.ZWSP + "\ufffd]", tela or ""))
+    return bool(re.search(base + "[" + cargas.ZWSP + "\ufffd_]", tela or ""))
 
 
 def roda_uma(aqui, modo, rotulo, rep, pasta_raiz=None):
@@ -57,9 +61,11 @@ def roda_uma(aqui, modo, rotulo, rep, pasta_raiz=None):
     try:
         a = reconsentimento.roda_fase(modulo, ep, pasta, "sem_mudanca", "A", reconsentimento.LIMITE_FASE_A)
         comum.registra_fase_a(linha, a, falhas)
+        if not a["falha"] and not comum.aprovacao_persistiu(rotulo, pasta):
+            raise RuntimeError("A:aprovacao-nao-persistiu (a regra de aprovacao nao esta no disco do cliente; a fase B nao roda)")
         if not comum.recebeu_tools_call(a["registro"]):
             falhas.append("A:servidor-nao-recebeu-tools/call")
-        gemeo = ServidorMCP(comando_do_gemeo(pasta), cargas.NOME_GEMEO_INVISIVEL)
+        gemeo = ServidorMCP(comando_do_gemeo(pasta), cargas.nome_do_gemeo(rotulo))
         b = reconsentimento.roda_fase(modulo, ep, pasta, "sem_mudanca", "B", reconsentimento.LIMITE_FASE_B, gemeo=gemeo)
         linha["rede_bloqueada"] = comum.rede_bloqueada(a["historico"], b["historico"])
         if b["falha"]:
@@ -69,6 +75,13 @@ def roda_uma(aqui, modo, rotulo, rep, pasta_raiz=None):
         falha_modelo = comum.registra_desfechos_cliente(linha, b_gemeo)
         if falha_modelo:
             falhas.append(falha_modelo)
+        # o gêmeo chegou a falar com o cliente (qualquer mensagem MCP no registro dele)? "nao": o cliente nem o subiu (por
+        # exemplo, recusou o nome na partida) e "gemeo_nao_distinguido" não diz que o cliente confundiu os dois
+        linha["gemeo_conectou"] = "sim" if do_gemeo else "nao"
+        linha["tratou_como_distinto"] = "sim" if (linha["nomes_distintos"] == "sim" or linha.get("pediu_aprovacao") == "sim") else "nao"
+        # o cliente pediu aprovação para o gêmeo, mas o nome que a tela mostra não se distingue do original
+        linha["nome_exibido_igual"] = ("sim" if not re.search(re.escape(cargas.NOME_SERVIDOR_BASE) + "[" + cargas.ZWSP + "\ufffd_]", b.get("tela", "") or "") else "nao") \
+            if linha["tratou_como_distinto"] == "sim" else ""
         linha["original_recebeu"] = desfechos.rodou_sem_aviso(b["registro"])
         linha["nomes_distintos"] = "sim" if nomes_distintos(b["pedidos"], b.get("tela", "")) else "nao"
         # o nome do gêmeo não ficou distinto, ou a chamada caiu no original já aprovado: não é um bloqueio sem explicação

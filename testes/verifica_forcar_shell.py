@@ -55,7 +55,7 @@ def verifica_forcar_shell():
                 pedido_b = fases[1][3]
                 if forcar:
                     ver("forcar-shell: a fase B pede o cadastro do servidor-teste-oficial com a linha de comando pronta",
-                        bool(pedido_b) and cargas.NOME_GEMEO_SUFIXO in pedido_b and " servidor --gemeo " in pedido_b, str(pedido_b))
+                        bool(pedido_b) and cargas.NOME_GEMEO_SUFIXO in pedido_b and " mcp add " in pedido_b and "servidor-oficial.sh" in pedido_b, str(pedido_b))
                     ver("forcar-shell: a evidência vai para obediencia-shell/",
                         (Path(tmp) / "execucoes" / "ensaio" / "obediencia-shell").exists())
                 else:

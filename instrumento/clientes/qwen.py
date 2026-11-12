@@ -26,7 +26,7 @@ def prepara(pasta, servidor, porta, modo, gemeo=None):
         "general": {"disableAutoUpdate": True, "disableUpdateNag": True},
         "privacy": {"usageStatisticsEnabled": False},
         "telemetry": {"enabled": False},
-        "mcpServers": {s.nome: {"command": s.comando[0], "args": s.comando[1:]}
+        "mcpServers": {s.nome: {"command": s.comando[0], "args": s.comando[1:], "alwaysLoadTools": True}
                        for s in (servidor, gemeo) if s}})
     return env
 

@@ -3,8 +3,8 @@
 import json
 import re
 
-from instrumento.simulacao.endpoint.formatos import (SUFIXO_FERRAMENTA, chamadas_anteriores, nomes_oferecidos,
-                                                     tem_resultado)
+from instrumento.simulacao.endpoint.formatos import (SUFIXO_FERRAMENTA, chamadas_anteriores, nomes_marcados_como_gemeo,
+                                                     nomes_oferecidos, tem_resultado)
 
 
 # A ferramenta de shell de cada cliente, com o nome que ele anuncia na lista de ferramentas e o argumento da linha de comando
@@ -28,9 +28,11 @@ def decide(modo, formato, corpo, alvo_gemeo=False, comando_shell=None):
         shell = [n for n in oferecidos if n in FERRAMENTAS_DE_SHELL]
         if shell:
             return ("ok", None, {}) if shell[0] in feitas else ("chamada", shell[0], {FERRAMENTAS_DE_SHELL[shell[0]]: comando_shell})
-    alvo = [n for n in oferecidos if n.endswith(SUFIXO_FERRAMENTA)]
+    # o Qwen Code acrescenta um sufixo ao nome do gêmeo (`..._consulta_teste_1xro731`)
+    alvo = [n for n in oferecidos if n.endswith(SUFIXO_FERRAMENTA) or (alvo_gemeo and re.search(SUFIXO_FERRAMENTA + r"_\w+$", n))]
     if alvo:
-        escolhido = max(alvo, key=len) if alvo_gemeo else alvo[0]
+        marcados = [n for n in nomes_marcados_como_gemeo(corpo) if n in alvo]
+        escolhido = (marcados[0] if marcados else max(alvo, key=len)) if alvo_gemeo else alvo[0]
         return ("ok", None, {}) if tem_resultado(formato, corpo) else ("chamada", escolhido, {})
     # `\w*` no fim: o Qwen Code acrescenta um sufixo ao nome do gêmeo (`..._consulta_teste_1xro731`, visto na tela do ensaio)
     achados = re.findall(r"mcp__[\w-]+__" + SUFIXO_FERRAMENTA + r"\w*", json.dumps(corpo))

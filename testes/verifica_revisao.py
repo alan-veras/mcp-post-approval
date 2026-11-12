@@ -286,7 +286,7 @@ def verifica_b_higiene():
 
 
 HASH_P1 = "eede424ba1515b6b7081674531f8a3fa7a659490b0f2b59d42e7fb1368bde3a4"
-HASH_P2 = "8e192506700726947c01432dbc49d5a2ca0479c4cb5d6c7e838fcb67ec1e9285"
+HASH_P2 = "c77c45d6abd8884451af01ee7b29ae0e89e0094cce3c4255ea96d0e989328130"
 
 @protegido
 def verifica_dica_do_codex_nao_e_rede_externa():

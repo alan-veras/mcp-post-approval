@@ -24,7 +24,7 @@ VARIAVEL = "NVIDIA_API_KEY"
 
 
 class ErroProvedor(Exception):
-    """O provedor recusou o pedido de um jeito que repetir não resolve (400, 401, 403, 404...)."""
+    """O provedor recusou o pedido de um jeito que repetir não resolve (400 a 404, 422...)."""
 
 
 class PressaoPersistente(ErroProvedor):
@@ -70,8 +70,8 @@ def resposta_inutilizavel(resp):
         if not chamadas and not texto.strip():
             return "o provedor devolveu resposta vazia (sem texto e sem chamada de ferramenta)"
         if escolha.get("finish_reason") == "length":
-            for c in chamadas:
-                json.loads(((c.get("function") or {}).get("arguments")) or "{}")
+            # cortada pelo NOSSO limite de tokens: não é resposta do modelo (o raciocínio também conta no limite)
+            return "o provedor cortou a resposta por tamanho (finish_reason=length)"
     except (ValueError, TypeError, AttributeError, KeyError, IndexError):
         return "o provedor devolveu resposta cortada (argumentos de ferramenta truncados)"
     return ""
@@ -116,9 +116,10 @@ class Provedor:
     def corpo_enviado(self, corpo_chat):
         """O corpo que vai de fato ao provedor, sem streaming. É o que o endpoint grava em `prov-NNN-ida.json`.
 
-        Desenho v2 (30/out/2026): o modelo recebe os parâmetros que o próprio cliente manda. A
-        `temperature` do cliente passa; sem ela, vale a do Provedor (None: o padrão do provedor). O
-        `max_tokens` do cliente passa, limitado a TETO_TOKENS; sem ele, vale o do Provedor."""
+        Parâmetros: o tradutor de pedidos (repasse.traduz_ida) não copia `temperature` nem `max_tokens` do cliente, então
+        valem sempre os do Provedor, iguais para os três clientes (temperatura: o padrão do provedor; max_tokens 4096;
+        sem streaming). O ramo abaixo, que aceitaria os do cliente limitados a TETO_TOKENS, só vale se um tradutor os
+        copiar; hoje não copia (decisão de 11/nov, registrada em EMENDAS.md)."""
         corpo = {k: v for k, v in corpo_chat.items()
                  if k not in ("model", "temperature", "max_tokens", "max_completion_tokens", "stream", "stream_options")}
         temperatura = corpo_chat.get("temperature", self.temperatura)
@@ -156,7 +157,13 @@ class Provedor:
             return None, "o provedor devolveu JSON que não é um objeto"
         if not resp.get("choices"):
             if resp.get("error"):
-                raise ErroProvedor(self._limpa("o provedor devolveu erro: " + json.dumps(resp["error"])[:500]))
+                erro = resp["error"]
+                codigo = erro.get("code") if isinstance(erro, dict) else None
+                texto = self._limpa("o provedor devolveu erro: " + json.dumps(erro)[:500])
+                # só é permanente o erro de pedido, chave, cota ou modelo; o resto (429, 5xx, "retry later") vale repetir
+                if str(codigo) in ("400", "401", "402", "403", "404", "422"):
+                    raise ErroProvedor(texto)
+                return None, texto.replace("o provedor devolveu erro:", "o provedor devolveu erro transitorio:", 1)
             return None, "o provedor devolveu resposta sem choices"
         vazio = resposta_inutilizavel(resp)
         if vazio:
@@ -165,11 +172,14 @@ class Provedor:
 
     def chat(self, corpo_chat):
         dados = json.dumps(self.corpo_enviado(corpo_chat)).encode()
-        motivo = ""
+        motivo, motivos = "", []
         for espera in (0,) + self.esperas:
             if espera:
                 self.dorme(espera)
             resp, motivo = self._uma_vez(dados)
             if resp is not None:
+                if motivos:  # as repetições internas ficam registradas: nada é refeito sem aparecer na evidência
+                    resp["_tentativas_anteriores"] = motivos
                 return resp
+            motivos.append(motivo[:200])
         raise PressaoPersistente(f"{motivo} (depois de {len(self.esperas) + 1} tentativas)")

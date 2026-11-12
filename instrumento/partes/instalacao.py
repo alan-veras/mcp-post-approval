@@ -125,6 +125,8 @@ def roda_uma(aqui, modo, rotulo, canal, rep, pasta_raiz=None, cabecalhos=CABECAL
         a = reconsentimento.roda_fase(modulo, ep, pasta, celula, "A", reconsentimento.LIMITE_FASE_A,
                                       comando=comando, extras=extras)
         comum.registra_fase_a(linha, a, falhas)
+        if not a["falha"] and not comum.aprovacao_persistiu(rotulo, pasta):
+            raise RuntimeError("A:aprovacao-nao-persistiu (a regra de aprovacao nao esta no disco do cliente; a fase B nao roda)")
         if registro.versao_rodou(a["registro"]) != "1.0.0":
             falhas.append("A:pacote-nao-rodou-1.0.0")
         if not comum.recebeu_tools_call(a["registro"]):

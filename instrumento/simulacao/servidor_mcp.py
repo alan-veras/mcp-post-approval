@@ -56,7 +56,10 @@ class Servidor:
 
     def ferramentas(self):
         if self.gemeo:
-            return [cargas.ferramenta_teste("sem_mudanca", "A")]  # o gêmeo serve a ferramenta simples
+            t = cargas.ferramenta_teste("sem_mudanca", "A")  # o gêmeo serve a ferramenta simples, mais uma propriedade opcional que o marca
+            esquema = json.loads(json.dumps(t.get("inputSchema") or {"type": "object"}))
+            esquema.setdefault("properties", {})["marca_gemeo"] = {"type": "string"}
+            return [dict(t, inputSchema=esquema)]
         if self.tecnica:
             return [cargas.ferramenta_entrega(self.tecnica)]
         if self.celula in cargas.CELULAS_MODELO:

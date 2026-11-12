@@ -188,7 +188,7 @@ def monta_resposta_multi(formato, texto, chamadas, corpo, caminho, modelo=MODELO
     raise ValueError(f"dialeto desconhecido: {formato}")
 
 
-def monta_resposta(formato, acao, nome, args, corpo, caminho):
+def monta_resposta(formato, acao, nome, args, corpo, caminho, alvo_gemeo=False):
     """(tipo, bytes) da resposta no dialeto do cliente."""
     if formato == "contagem":
         return "application/json", json.dumps({"input_tokens": 10}).encode()
@@ -198,7 +198,7 @@ def monta_resposta(formato, acao, nome, args, corpo, caminho):
         return resp_chat(acao, nome, args, texto_final(corpo), bool(corpo.get("stream")))
     if formato == "responses":
         return resp_responses(acao, nome, args, texto_final(corpo), bool(corpo.get("stream")),
-                              namespace_de(corpo, nome))
+                              namespace_de(corpo, nome, alvo_gemeo))
     raise ValueError(f"dialeto desconhecido: {formato}")
 
 

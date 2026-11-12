@@ -4,27 +4,27 @@ import csv
 import io
 
 from instrumento import config
+from instrumento.analise import csvs
 from instrumento.coleta.diario import AQUI, LOG, agora, estado, pid_vivo
 from instrumento.coleta.fila import FILA
 
 
 def le(nome):
-    f = AQUI / nome
-    if not f.exists():
-        return []
-    with open(f, newline="", encoding="utf-8") as h:
-        return list(csv.DictReader(h))
+    return csvs.le_csv(AQUI / nome)
 
 
 def unicas(linhas, campos, ignora_pausa=False):
-    """Execuções distintas concluídas. Com `ignora_pausa` (Parte 2), a chave só entra se alguma linha não é falha de
-    infraestrutura (provedor, rede ou erro permanente): essas execuções continuam pendentes até a coleta refazê-las."""
-    vistas = set()
+    """Execuções distintas concluídas. Com `ignora_pausa` (Parte 2), a mesma regra de `obediencia.ja_feita`: a chave só
+    conta se alguma linha não é falha de infraestrutura (provedor, rede ou erro permanente) nem `nao_usou_ferramenta`,
+    ou se a fase A ficou sem a ferramenta em todas as 1 + 2 tentativas; senão a execução continua pendente."""
+    grupos = {}
     for r in linhas:
-        if ignora_pausa and (r.get("falha_instrumento") or "").startswith(("provedor:", "rede:", "permanente:")):
-            continue
-        vistas.add(tuple(r.get(c, "") for c in campos))
-    return len(vistas)
+        grupos.setdefault(tuple(r.get(c, "") for c in campos), []).append(r)
+    if not ignora_pausa:
+        return len(grupos)
+    infra = lambda r: (r.get("falha_instrumento") or "").startswith(("provedor:", "rede:", "permanente:"))
+    sem = lambda r: r.get("nao_usou_ferramenta") == "sim" and not infra(r)
+    return sum(any(not infra(r) and not sem(r) for r in rs) or sum(sem(r) for r in rs) >= 3 for rs in grupos.values())
 
 
 def progresso():
@@ -64,7 +64,7 @@ def retrato():
     elif len(e["concluidos"]) == len(FILA):
         situacao = "CONCLUÍDA"
     else:
-        situacao = "PARADA (veja o fim do log; retome com: python3 experimento.py coleta iniciar)"
+        situacao = "PARADA (veja o fim do log; retome com: python3 experimento.py coleta retomar)"
     linhas = [f"Coleta da rodada 2  {agora()}  {situacao}", ""]
     total_f = total_e = 0
     resta = 0.0
@@ -98,9 +98,10 @@ def verifica():
                 saida.append(f"{s.csv}: ainda não existe (0 de {s.esperadas})")
                 continue
             bruto = f.read_bytes()
-            completo = bruto[:bruto.rfind(b"\n") + 1] if bruto and not bruto.endswith(b"\n") else bruto
+            corte = csvs.fim_do_ultimo_registro(bruto)
+            completo = bruto[:corte]
             linhas = list(csv.DictReader(io.StringIO(completo.decode("utf-8", "replace"), newline="")))  # sem a cauda incompleta
-            if bruto and not bruto.endswith(b"\n"):
+            if corte != len(bruto):
                 saida.append(f"{s.csv}: ATENÇÃO: a última linha está sem quebra (cauda incompleta; a próxima gravação a guarda em .parcial)")
             cabecalhos = sum(1 for l in bruto.decode("utf-8", "replace").splitlines()[1:] if l.startswith(s.chave[0] + ","))
             por_chave = {}

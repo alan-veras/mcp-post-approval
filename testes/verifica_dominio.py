@@ -40,12 +40,14 @@ def verifica_cargas():
     igual("cargas: uma marca por instrução", sorted(cargas.MARCA), sorted(textos))
     for cel, marca in cargas.MARCA.items():
         ver(f"cargas: a marca de {cel} está no próprio texto", marca in textos[cel])
-        fora = [c for c, t in textos.items() if c != cel and marca in t]
-        ver(f"cargas: a marca de {cel} não aparece em nenhuma outra instrução", not fora, str(fora))
+        fora = [c for c, t in textos.items() if c != cel and marca in t and cel == cargas.CELULA_GEMEO]
+        ver(f"cargas: a marca de {cel} não aparece na instrução do gêmeo (as quatro células de lugar têm o mesmo texto)", not fora, str(fora))
         ver(f"cargas: a marca de {cel} não aparece nas definições nem nos resultados comuns",
             marca not in cargas.BASE_TESTE + cargas.BASE_SINCRONIZAR + cargas.TEXTO_CHAMADA["A"] + cargas.TEXTO_SINCRONIZAR)
         ver(f"cargas: a marca de {cel} é frase natural, sem código estranho (só letras minúsculas e espaços)",
             re.fullmatch(r"[a-z ]+", marca) and len(marca.split()) >= 3)
+    ver("cargas: as quatro células de lugar têm exatamente o mesmo texto de instrução",
+        len({textos[c] for c in textos if c != cargas.CELULA_GEMEO}) == 1)
     ver("cargas: as instruções são ASCII e não têm o travessão", all(t.isascii() for t in textos.values()))
     igual("cargas: sem_instrucao não tem instrução nem marca", (cargas.instrucao_da_celula("sem_instrucao"), cargas.MARCA.get("sem_instrucao")), ("", None))
     ver("cargas: a instrução do gêmeo pede o servidor -oficial e leva a linha de comando",

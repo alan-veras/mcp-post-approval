@@ -58,4 +58,13 @@ def ordem_parte1(reps=REPS_PARTE1):
 
 
 def ordem_parte2(reps=REPS_PARTE2):
-    return sorteia(itens_parte2(reps))
+    """Randomização em blocos: um bloco por repetição, cada bloco com as 36 combinações (modelo, cliente, célula)
+    embaralhadas. Assim uma deriva do provedor no tempo cai por igual em cada combinação (o sorteio de todas de uma
+    vez deixava a posição média de uma combinação variar de 39 a 135 em 180)."""
+    rng = random.Random(SEMENTE)
+    base = itens_parte2(1)
+    saida = []
+    for r in range(1, reps + 1):
+        pesos = [rng.random() for _ in base]
+        saida += [base[i]._replace(rep=r) for i in sorted(range(len(base)), key=lambda i: pesos[i])]
+    return saida

@@ -168,6 +168,13 @@ def _rodar(a):
     confere_trava(a)
     aqui = config.pasta_do_modo(a.modo)
     aqui.mkdir(exist_ok=True)
+    if a.modo == "confirmatoria":
+        from instrumento.coleta.diario import pega_trava
+        global _TRAVA_RODAR
+        _TRAVA_RODAR = pega_trava("rodar")  # uma só escrita por vez nos CSVs; solta sozinha quando o processo morre
+        if _TRAVA_RODAR is None:
+            print("rodar recusado: outro rodar já está gravando em resultados/ (trava coleta/rodar.lock)", flush=True)
+            return 7
     confirmatoria = a.modo == "confirmatoria"
     parar = lambda linha, comp: motivo_de_parada(linha, comp, FIXADAS, confirmatoria)
     if a.parte == "sonda":

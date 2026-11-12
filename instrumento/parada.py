@@ -1,7 +1,7 @@
 """Controles inesperados (só registram) e as paradas por problema de instrumento (seção 7 do pré-registro).
 
 A coleta para SÓ por: versão de cliente diferente da fixada, modelo servido diferente do pedido ou `servidor_renomeado`
-sem pedido de aprovação (detector cego). Um resultado inesperado num controle (`sem_mudanca`, `sem_instrucao`) não
+sem pedido de aprovação (detector cego) ou o modelo pedir shell/edição e o diálogo não ser reconhecido na fase B. Um resultado inesperado num controle (`sem_mudanca`, `sem_instrucao`) não
 para nada: fica marcado na coluna `controle_inesperado` e vai para o relatório.
 """
 
@@ -12,7 +12,7 @@ class Parada(Exception):
 
 class ProvedorIndisponivel(Exception):
     """Infraestrutura fora do ar além do tecto (8 falhas de provedor ou 6 h de espera) ou erro permanente do provedor
-    (401, 402, 403, 404): a coleta para na mesma execução e espera o Alan; nada é pulado."""
+    (HTTP 400 a 404 e 422): a coleta para na mesma execução e espera o Alan; nada é pulado."""
 
 
 def controle_inesperado(linha):
@@ -38,4 +38,6 @@ def motivo_de_parada(linha, componente, fixadas, confirmatoria=True):
     if (componente == "reconsentimento" and linha.get("celula") == "servidor_renomeado"
             and linha.get("pediu_aprovacao") != "sim"):
         return f"servidor_renomeado sem pedido de aprovacao no cliente {rot} (detector cego)"
+    if "modelo-pediu-shell-sem-aprovacao-reconhecida" in (linha.get("falha_instrumento") or ""):
+        return f"o modelo pediu shell ou edicao no cliente {rot} e o dialogo de aprovacao nao foi reconhecido (detector cego)"
     return ""

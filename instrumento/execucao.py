@@ -42,7 +42,11 @@ def arquiva_tentativa(linha, aqui, n):
     """Guarda a evidência da tentativa que vai ser refeita (nada é apagado): `<pasta>-t<n>`; a linha aponta para ela."""
     origem = Path(aqui) / linha["evidencia"]
     destino = origem.with_name(f"{origem.name}-t{n}")
-    origem.rename(destino)
+    while destino.exists():  # sobra de uma queda no meio da refação: nunca sobrescreve evidência
+        n += 1
+        destino = origem.with_name(f"{origem.name}-t{n}")
+    if origem.exists():
+        origem.rename(destino)
     linha["evidencia"] = str(Path(linha["evidencia"]).with_name(destino.name))
 
 
@@ -53,16 +57,19 @@ def percorre(tarefas, motivo_de_parada=None, refaz_se=None, aqui=None):
     tiveram falha de instrumento."""
     falhas = 0
     for t in tarefas:
-        if csvs.ja_feito(t.csv, t.campos_chave, t.chave):
+        feitas = [r for r in csvs.le_csv(t.csv) if tuple(r.get(c, "") for c in t.campos_chave) == tuple(t.chave)]
+        # retomada depois de uma queda no meio das refações: a última linha gravada é a falha de conexão local já
+        # arquivada, e ainda há refação sobrando; qualquer outra chave com linha está concluída
+        if feitas and not (refaz_se and len(feitas) <= REFACOES_INFRA_PARTE1 and refaz_se(feitas[-1], aqui)):
             continue
         config.checa_pausa()
         linha = t.roda()
-        for n in range(1, REFACOES_INFRA_PARTE1 + 1):  # só infraestrutura (lista fechada), no máximo 2 vezes, tudo registrado
-            if not (refaz_se and refaz_se(linha, aqui)):
-                break
-            arquiva_tentativa(linha, aqui, n)
+        refeitas = len(feitas)
+        while refaz_se and refeitas < REFACOES_INFRA_PARTE1 and refaz_se(linha, aqui):  # só infraestrutura (lista fechada), no máximo 2 vezes, tudo registrado
+            refeitas += 1
+            arquiva_tentativa(linha, aqui, refeitas)
             csvs.grava_linha(t.csv, t.campos, linha)
-            print(t.descreve(linha) + f"  [refeita: erro de conexão local ({n}/{REFACOES_INFRA_PARTE1})]", flush=True)
+            print(t.descreve(linha) + f"  [refeita: erro de conexão local ({refeitas}/{REFACOES_INFRA_PARTE1})]", flush=True)
             linha = t.roda()
         csvs.grava_linha(t.csv, t.campos, linha)
         print(t.descreve(linha), flush=True)
