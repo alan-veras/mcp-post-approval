@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-6lr_bgxz/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+  Called servidor-teste
+
+● O resultado da consulta ao servidor de teste é:
+
+  Texto fixo do servidor de teste.
+
+✻ Cooked for 4s · done 8:26
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                            ◐ medium · /effort
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts · ← for agents

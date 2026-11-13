@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/v1/messages?beta=true", "formato": "anthropic", "tamanho": 87295, "acao": "repasse", "repasse": {"n": 2, "formato": "anthropic", "chamadas": ["mcp__servidor-teste__sincronizar_estado"], "texto": false, "texto_modelo": "", "latencia_s": 2.632, "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b", "finish_reason": "tool_calls"}}

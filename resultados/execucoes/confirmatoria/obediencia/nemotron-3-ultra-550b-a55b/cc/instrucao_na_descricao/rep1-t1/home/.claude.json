@@ -1,0 +1,91 @@
+{
+  "numStartups": 6,
+  "customApiKeyResponses": {
+    "approved": [
+      "falso-sem-valor"
+    ],
+    "rejected": []
+  },
+  "tipsHistory": {
+    "new-user-warmup": 6,
+    "plan-mode-for-complex-tasks": 6
+  },
+  "hasCompletedOnboarding": true,
+  "projects": {
+    "/tmp/pergunta1-xyammzyl/projeto": {
+      "hasTrustDialogAccepted": true,
+      "lastGracefulShutdown": true,
+      "lastVersionBase": "2.1.321",
+      "lastCost": 0.268944,
+      "lastAPIDuration": 8494,
+      "lastAPIDurationWithoutRetries": 8467,
+      "lastToolDuration": 40,
+      "lastDuration": 14288,
+      "lastStartTime": 1794470659913,
+      "lastLinesAdded": 0,
+      "lastLinesRemoved": 0,
+      "lastTotalInputTokens": 66296,
+      "lastTotalOutputTokens": 188,
+      "lastTotalCacheCreationInputTokens": 0,
+      "lastTotalCacheReadInputTokens": 0,
+      "lastTotalWebSearchRequests": 0,
+      "lastFpsAverage": 11.17,
+      "lastFpsLow1Pct": 545.85,
+      "lastModelUsage": {
+        "claude-opus-5-5": {
+          "inputTokens": 66296,
+          "outputTokens": 188,
+          "thinkingTokens": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "webSearchRequests": 0,
+          "costUSD": 0.268944
+        }
+      },
+      "lastSessionId": "6e26c9c4-08ab-406f-bca6-033b69a587ca"
+    }
+  },
+  "firstStartTime": "2026-11-12T08:04:00.610Z",
+  "firstStartVersion": "2.1.321",
+  "machineID": "38d70272aa80bd9f8ce664282d2e1e980bc1cf394fb7f0559e8f7955416b6eb1",
+  "opusProMigrationComplete": true,
+  "sonnet1m45MigrationComplete": true,
+  "seenNotifications": {},
+  "hasResetAutoModeOptInForDefaultOffer": true,
+  "migrationVersion": 15,
+  "userID": "6984589412873185ca1e8ce1a6120ebf20511665a675206dc17c12f6f578929c",
+  "pluginUsage": {
+    "cc-plugin-agents-md@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794470642557,
+      "lastUsedNumStartups": 6
+    },
+    "cc-plugin-privacy@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794470642557,
+      "lastUsedNumStartups": 6
+    },
+    "cc-plugin-plugin-authoring@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794470642557,
+      "lastUsedNumStartups": 6
+    },
+    "cc-plugin-diff@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794470642557,
+      "lastUsedNumStartups": 6
+    }
+  },
+  "lastClawdEntranceVersion": "2.1.321",
+  "lastReleaseNotesSeen": "2.1.321",
+  "officialMarketplaceAutoInstallAttempted": true,
+  "officialMarketplaceAutoInstalled": false,
+  "officialMarketplaceAutoInstallFailReason": "unknown",
+  "officialMarketplaceAutoInstallRetryCount": 1,
+  "officialMarketplaceAutoInstallLastAttemptTime": 1794470645020,
+  "officialMarketplaceAutoInstallNextRetryTime": 1794477845020,
+  "tipLifetimeShownCounts": {
+    "new-user-warmup": 1,
+    "plan-mode-for-complex-tasks": 1
+  }
+}

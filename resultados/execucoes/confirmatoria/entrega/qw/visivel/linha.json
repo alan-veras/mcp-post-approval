@@ -1,0 +1,19 @@
+{
+ "cliente": "qw",
+ "versao": "0.26.0",
+ "sha256_binario": "3c53a220bdf124e8ef9fd28cd3465c761a2a466deb6dc6a97272d0a6d1121f59",
+ "tecnica": "visivel",
+ "rep": 1,
+ "chegou_intacta": "sim",
+ "desfecho_descricao": "intacta",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "prefixado",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {}, \"len_servida\": 78, \"len_chegou\": 78, \"fim_servida\": \"eto [SENTINELA-OCULTA-VISIVEL]\", \"fim_chegou\": \"eto [SENTINELA-OCULTA-VISIVEL]\"}",
+ "saida_cliente": 0,
+ "duracao_s": 1.6,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/qw/visivel"
+}

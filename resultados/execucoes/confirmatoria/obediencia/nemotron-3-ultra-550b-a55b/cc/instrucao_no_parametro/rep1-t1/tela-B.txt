@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-dmctiwpq/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+  Called servidor-teste
+
+● O resultado da consulta ao servidor de teste:
+
+  Texto fixo do servidor de teste.
+
+✻ Crunched for 5s · done 4:51
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

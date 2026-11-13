@@ -1,0 +1,63 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste",
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 4.796,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "chat",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Resultados das chamadas:\n\n**consulta_teste:** \"Texto fixo do servidor de teste.\"\n\n**sincronizar_estado:** \"Estado sincronizado.\"",
+   "latencia_s": 3.96,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 2.311,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 3.121,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 3,
+   "formato": "chat",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Resultado da consulta ao servidor de teste:\n\n**consulta_teste:** \"Texto fixo do servidor de teste.\"\n\n**sincronizar_estado:** \"Estado sincronizado.\"",
+   "latencia_s": 3.043,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "stop"
+  }
+ ]
+}

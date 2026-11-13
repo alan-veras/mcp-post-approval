@@ -1,0 +1,23 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-ba4hcwqs/projeto
+
+
+❯ Use as ferramentas consulta_teste e sincronizar_estado e mostre o resultado.
+
+● Calling servidor-teste 2 times…
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Tool use
+ servidor-teste — Consulta Teste Tool: (MCP)
+
+ About the servidor-teste — Consulta Teste Tool:
+ │ Retorna um texto fixo do servidor de teste.
+
+ Do you want to proceed?
+ ❯ 1. Yes
+   2. Yes, and don't ask again for servidor-teste — Consulta Teste commands in /tmp/pergunta1-ba4hcwqs/projeto
+   3. No
+
+ Esc to cancel · Tab to amend

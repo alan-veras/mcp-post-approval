@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-hhz5270q/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+● Vou usar a ferramenta consulta_teste agora:
+
+  Called servidor-teste
+
+● A ferramenta consulta_teste foi executada com sucesso. O resultado retornado foi:
+
+  ▎ "Texto fixo do servidor de teste."
+
+  É um servidor MCP de teste que sempre retorna esse texto fixo, confirmando que a conexão com o servidor está funcionando corretamente. ✅
+
+✻ Baked for 42s · done 8:59
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

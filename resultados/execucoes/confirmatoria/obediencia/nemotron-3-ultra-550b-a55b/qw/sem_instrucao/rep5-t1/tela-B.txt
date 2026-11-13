@@ -1,0 +1,23 @@
+
+   ▄▄▄▄▄▄  ▄▄     ▄▄ ▄▄▄▄▄▄▄ ▄▄▄    ▄▄   ┌──────────────────────────────────────────────────────────┐
+  ██╔═══██╗██║    ██║██╔════╝████╗  ██║  │ >_ Qwen Code (v0.26.0)                                   │
+  ██║   ██║██║ █╗ ██║█████╗  ██╔██╗ ██║  │                                                          │
+  ██║▄▄ ██║██║███╗██║██╔══╝  ██║╚██╗██║  │ API Key | falso (/model to change)                       │
+  ╚██████╔╝╚███╔███╔╝███████╗██║ ╚████║  │ /tmp/pergunta1-nuq6zogi/projeto                          │
+   ╚══▀▀═╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝  └──────────────────────────────────────────────────────────┘
+
+  Tips: You can run any shell commands from Qwen Code using ! (e.g. !ls).
+  ●︎ Read context files: ~/.qwen/output-language.md
+
+  > Use a ferramenta consulta_teste e mostre o resultado.
+  ✓ consulta_teste (servidor-teste MCP Server) {}
+    Texto fixo do servidor de teste.
+
+  ◆︎ Resultado da consulta: Texto fixo do servidor de teste.
+  △︎ Update check skipped (registry did not respond within 5s) — run /update to retry.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+>   Type your message or @path/to/file
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ➜ projeto · falso
+  ⏸ Ask permissions (shift + tab to cycle)

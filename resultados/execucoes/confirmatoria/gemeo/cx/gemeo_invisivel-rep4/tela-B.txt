@@ -1,0 +1,27 @@
+WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/
+tmp/pergunta1-vxmici5x/home/.codex"))
+╭────────────────────────────────────────────╮
+│ >_ OpenAI Codex (v0.155.1)                 │
+│                                            │
+│ model:     falso   /model to change        │
+│ directory: /tmp/pergunta1-vxmici5x/projeto │
+╰────────────────────────────────────────────╯
+
+  Tip: New Build faster with Codex.
+
+
+› Use a ferramenta consulta_teste e mostre o resultado.
+
+
+⚠ Model metadata for `falso` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+
+• Calling servidor_teste.consulta_teste({})
+
+
+  Field 1/1
+  Allow the servidor_teste MCP server to run tool "consulta_teste"?
+  › 1. Allow                   Run the tool and continue.
+    2. Allow for this session  Run the tool and remember this choice for this session.
+    3. Always allow            Run the tool and remember this choice for future tool calls.
+    4. Cancel                  Cancel this tool call
+  enter to submit | esc to cancel

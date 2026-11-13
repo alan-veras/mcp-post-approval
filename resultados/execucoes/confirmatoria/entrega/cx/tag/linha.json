@@ -1,0 +1,19 @@
+{
+ "cliente": "cx",
+ "versao": "0.155.1",
+ "sha256_binario": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+ "tecnica": "tag",
+ "rep": 1,
+ "chegou_intacta": "sim",
+ "desfecho_descricao": "intacta",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "intacto",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {}, \"len_servida\": 75, \"len_chegou\": 75, \"fim_servida\": \"rojeto \\\\U000e0020\\\\U000e005b\\\\U000e0053\\\\U000e0045\\\\U000e004e\\\\U000e0054\\\\U000e0049\\\\U000e004e\\\\U000e0045\\\\U000e004c\\\\U000e0041\\\\U000e002d\\\\U000e004f\\\\U000e0043\\\\U000e0055\\\\U000e004c\\\\U000e0054\\\\U000e0041\\\\U000e002d\\\\U000e0054\\\\U000e0041\\\\U000e0047\\\\U000e005d\", \"fim_chegou\": \"rojeto \\\\U000e0020\\\\U000e005b\\\\U000e0053\\\\U000e0045\\\\U000e004e\\\\U000e0054\\\\U000e0049\\\\U000e004e\\\\U000e0045\\\\U000e004c\\\\U000e0041\\\\U000e002d\\\\U000e004f\\\\U000e0043\\\\U000e0055\\\\U000e004c\\\\U000e0054\\\\U000e0041\\\\U000e002d\\\\U000e0054\\\\U000e0041\\\\U000e0047\\\\U000e005d\"}",
+ "saida_cliente": 0,
+ "duracao_s": 0.8,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/cx/tag"
+}

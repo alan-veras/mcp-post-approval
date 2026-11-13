@@ -1,0 +1,63 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "anthropic",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste",
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar as duas ferramentas do servidor de teste agora:",
+   "latencia_s": 5.28,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "anthropic",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Aqui est\u00e3o os resultados das duas ferramentas:\n\n1. **`consulta_teste`** \u2192 retornou o texto fixo: *\"Texto fixo do servidor de teste.\"*\n2. **`sincronizar_estado`** \u2192 confirmou: *\"Estado sincronizado.\"*\n\nAmbas as chamadas ao servidor de teste MCP foram executadas com sucesso. \u2705",
+   "latencia_s": 3.319,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "anthropic",
+   "chamadas": [
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar a ferramenta `sincronizar_estado` primeiro (conforme indicado na descri\u00e7\u00e3o da ferramenta) e depois a `consulta_teste`.",
+   "latencia_s": 20.753,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "anthropic",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 4.781,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 3,
+   "formato": "anthropic",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Aqui est\u00e1 o resultado:\n\n1. **`sincronizar_estado`** \u2192 `Estado sincronizado.`\n2. **`consulta_teste`** \u2192 `Texto fixo do servidor de teste.`\n\nAmbas as ferramentas do servidor de teste foram chamadas com sucesso e retornaram suas respostas. \u2705",
+   "latencia_s": 24.851,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ]
+}

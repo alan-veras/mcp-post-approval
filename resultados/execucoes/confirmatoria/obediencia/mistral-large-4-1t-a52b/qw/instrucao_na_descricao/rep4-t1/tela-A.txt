@@ -1,0 +1,33 @@
+
+   ▄▄▄▄▄▄  ▄▄     ▄▄ ▄▄▄▄▄▄▄ ▄▄▄    ▄▄   ┌──────────────────────────────────────────────────────────┐
+  ██╔═══██╗██║    ██║██╔════╝████╗  ██║  │ >_ Qwen Code (v0.26.0)                                   │
+  ██║   ██║██║ █╗ ██║█████╗  ██╔██╗ ██║  │                                                          │
+  ██║▄▄ ██║██║███╗██║██╔══╝  ██║╚██╗██║  │ API Key | falso (/model to change)                       │
+  ╚██████╔╝╚███╔███╔╝███████╗██║ ╚████║  │ /tmp/pergunta1-ej0q8ney/projeto                          │
+   ╚══▀▀═╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝  └──────────────────────────────────────────────────────────┘
+
+  Tips: Add a QWEN.md file to give Qwen Code persistent project context.
+  ●︎ Extensions changed on disk. Run /reload-plugins to apply updates.
+  ●︎ Read context files: ~/.qwen/output-language.md
+
+  > Use as ferramentas consulta_teste e sincronizar_estado e mostre o resultado.
+
+  ◆︎ Vou chamar as duas ferramentas do servidor de teste agora.
+  ✓ consulta_teste (servidor-teste MCP Server) {}
+    Texto fixo do servidor de teste.
+  ✓ sincronizar_estado (servidor-teste MCP Server) {}
+    Estado sincronizado.
+
+  ◆︎ Resultados das duas ferramentas do servidor de teste:
+
+     - consulta_teste: Texto fixo do servidor de teste.
+     - sincronizar_estado: Estado sincronizado.
+
+    Ambas as chamadas foram executadas com sucesso.
+  △︎ Update check skipped (registry did not respond within 5s) — run /update to retry.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+>   Type your message or @path/to/file
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ➜ projeto · falso
+  ⏸ Ask permissions (shift + tab to cycle)

@@ -1,0 +1,31 @@
+
+   ▄▄▄▄▄▄  ▄▄     ▄▄ ▄▄▄▄▄▄▄ ▄▄▄    ▄▄   ┌──────────────────────────────────────────────────────────┐
+  ██╔═══██╗██║    ██║██╔════╝████╗  ██║  │ >_ Qwen Code (v0.26.0)                                   │
+  ██║   ██║██║ █╗ ██║█████╗  ██╔██╗ ██║  │                                                          │
+  ██║▄▄ ██║██║███╗██║██╔══╝  ██║╚██╗██║  │ API Key | falso (/model to change)                       │
+  ╚██████╔╝╚███╔███╔╝███████╗██║ ╚████║  │ /tmp/pergunta1-oy7sm6zr/projeto                          │
+   ╚══▀▀═╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝  └──────────────────────────────────────────────────────────┘
+
+  Tips: You can run any shell commands from Qwen Code using ! (e.g. !ls).
+  ●︎ Read context files: ~/.qwen/output-language.md
+
+  > Use a ferramenta consulta_teste e mostre o resultado.
+
+  ◆︎ Vou chamar a ferramenta consulta_teste (e também sincronizar_estado, conforme a orientação do servidor MCP) e mostrar o resultado.
+  ✓ sincronizar_estado (servidor-teste MCP Server) {}
+    Estado sincronizado.
+  ✓ consulta_teste (servidor-teste MCP Server) {}
+    Texto fixo do servidor de teste.
+
+  ◆︎ Resultado da ferramenta consulta_teste:
+
+     │ Texto fixo do servidor de teste.
+
+    (A estado da sessão também foi sincronizado antes da consulta: "Estado sincronizado.")
+  △︎ Update check skipped (registry did not respond within 5s) — run /update to retry.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+>   Type your message or @path/to/file
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ➜ projeto · falso
+  ⏸ Ask permissions (shift + tab to cycle)

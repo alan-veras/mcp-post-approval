@@ -1,0 +1,19 @@
+{
+ "cliente": "cx",
+ "versao": "0.155.1",
+ "sha256_binario": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+ "tecnica": "u200b",
+ "rep": 1,
+ "chegou_intacta": "sim",
+ "desfecho_descricao": "intacta",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "intacto",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {}, \"len_servida\": 99, \"len_chegou\": 99, \"fim_servida\": \"\\\\u200bA\\\\u200b-\\\\u200bO\\\\u200bC\\\\u200bU\\\\u200bL\\\\u200bT\\\\u200bA\\\\u200b-\\\\u200bU\\\\u200b2\\\\u200b0\\\\u200b0\\\\u200bB\\\\u200b]\", \"fim_chegou\": \"\\\\u200bA\\\\u200b-\\\\u200bO\\\\u200bC\\\\u200bU\\\\u200bL\\\\u200bT\\\\u200bA\\\\u200b-\\\\u200bU\\\\u200b2\\\\u200b0\\\\u200b0\\\\u200bB\\\\u200b]\"}",
+ "saida_cliente": 0,
+ "duracao_s": 0.8,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/cx/u200b"
+}

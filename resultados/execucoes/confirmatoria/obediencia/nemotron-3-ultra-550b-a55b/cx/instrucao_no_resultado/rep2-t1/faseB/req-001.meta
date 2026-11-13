@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/responses", "formato": "responses", "tamanho": 47712, "acao": "repasse", "repasse": {"n": 1, "formato": "responses", "chamadas": [], "texto": false, "latencia_s": 49.122, "falha": "HTTP 503 do provedor: {\"message\":\"Service temporarily overloaded\",\"type\":\"Service Unavailable\",\"code\":503} (depois de 3 tentativas)"}}

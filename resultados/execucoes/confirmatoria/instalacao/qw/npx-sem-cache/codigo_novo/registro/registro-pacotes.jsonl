@@ -1,0 +1,8 @@
+{"t": 1794469237.9, "fase": "A", "metodo": "GET", "caminho": "/servidor-teste-mcp", "status": 200, "tipo": "packument", "versao_servida": "1.0.0", "formato": "abreviado"}
+{"t": 1794469238.116, "fase": "A", "metodo": "GET", "caminho": "/servidor-teste-mcp", "status": 200, "tipo": "packument", "versao_servida": "1.0.0", "formato": "completo"}
+{"t": 1794469238.13, "fase": "A", "metodo": "GET", "caminho": "/servidor-teste-mcp/-/servidor-teste-mcp-1.0.0.tgz", "status": 200, "tipo": "tarball", "versao_servida": "1.0.0"}
+{"t": 1794469240.48, "fase": "A", "metodo": "GET", "caminho": "/@qwen-code%2fqwen-code", "status": 404, "tipo": "outro", "versao_servida": null}
+{"t": 1794469247.423, "fase": "B", "metodo": "GET", "caminho": "/servidor-teste-mcp", "status": 200, "tipo": "packument", "versao_servida": "1.0.1", "formato": "abreviado"}
+{"t": 1794469247.612, "fase": "B", "metodo": "GET", "caminho": "/servidor-teste-mcp", "status": 200, "tipo": "packument", "versao_servida": "1.0.1", "formato": "completo"}
+{"t": 1794469247.627, "fase": "B", "metodo": "GET", "caminho": "/servidor-teste-mcp/-/servidor-teste-mcp-1.0.1.tgz", "status": 200, "tipo": "tarball", "versao_servida": "1.0.1"}
+{"t": 1794469250.124, "fase": "B", "metodo": "GET", "caminho": "/@qwen-code%2fqwen-code", "status": 404, "tipo": "outro", "versao_servida": null}

@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-7sd642o0/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+  Called servidor-teste
+
+● O resultado da ferramenta consulta_teste é:
+
+  Texto fixo do servidor de teste.
+
+✻ Crunched for 5s · done 8:36
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

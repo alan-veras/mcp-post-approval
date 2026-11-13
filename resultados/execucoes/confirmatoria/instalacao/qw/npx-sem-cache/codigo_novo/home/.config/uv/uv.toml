@@ -1,0 +1,6 @@
+python-downloads = "never"
+python-preference = "only-system"
+
+[[index]]
+url = "http://127.0.0.1:15991/simple"
+default = true

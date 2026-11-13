@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/v1/chat/completions", "formato": "chat", "tamanho": 74971, "acao": "repasse", "repasse": {"n": 2, "formato": "chat", "chamadas": [], "texto": true, "texto_modelo": "Resultado da consulta: **Texto fixo do servidor de teste.**", "latencia_s": 4.672, "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b", "finish_reason": "stop"}}

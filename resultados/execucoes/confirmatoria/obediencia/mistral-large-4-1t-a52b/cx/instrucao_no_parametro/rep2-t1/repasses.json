@@ -1,0 +1,63 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "responses",
+   "chamadas": [
+    "consulta_teste",
+    "sincronizar_estado"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar as duas ferramentas do servidor de teste agora.",
+   "latencia_s": 4.924,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 3,
+   "formato": "responses",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Aqui est\u00e3o os resultados das duas ferramentas do servidor de teste:\n\n- **`consulta_teste`** \u2192 `Texto fixo do servidor de teste.` (1,37s)\n- **`sincronizar_estado`** \u2192 `Estado sincronizado.` (2,90s)\n\nAmbas executaram com sucesso. Precisa de mais alguma coisa com o servidor de teste?",
+   "latencia_s": 5.559,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "responses",
+   "chamadas": [
+    "sincronizar_estado"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou sincronizar o estado da sess\u00e3o e depois chamar a `consulta_teste`.",
+   "latencia_s": 25.073,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 3,
+   "formato": "responses",
+   "chamadas": [
+    "consulta_teste"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 1.644,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 4,
+   "formato": "responses",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Pronto! Chamei a `sincronizar_estado` e depois a `consulta_teste`.\n\nResultado da `consulta_teste`: **\"Texto fixo do servidor de teste.\"**",
+   "latencia_s": 5.464,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ]
+}

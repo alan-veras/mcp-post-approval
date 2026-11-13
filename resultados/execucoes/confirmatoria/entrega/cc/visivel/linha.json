@@ -1,0 +1,19 @@
+{
+ "cliente": "cc",
+ "versao": "2.1.321",
+ "sha256_binario": "426c33815ca6645a772f722fbff10dbf2cbdb124a8aeab733c1365dbf8bbf61f",
+ "tecnica": "visivel",
+ "rep": 1,
+ "chegou_intacta": "sim",
+ "desfecho_descricao": "intacta",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "prefixado",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {}, \"len_servida\": 78, \"len_chegou\": 78, \"fim_servida\": \"eto [SENTINELA-OCULTA-VISIVEL]\", \"fim_chegou\": \"eto [SENTINELA-OCULTA-VISIVEL]\"}",
+ "saida_cliente": 0,
+ "duracao_s": 0.9,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/cc/visivel"
+}

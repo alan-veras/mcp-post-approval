@@ -1,0 +1,14 @@
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+NewMCPserverfoundinthisproject:servidor-teste-b
+
+MCPserversmayexecutecodeoraccesssystemresources.Alltoolcallsrequireapproval.LearnmoreintheMCP documentation.
+
+UsethisMCPserver
+UsethisandallfutureMCPserversinthisproject
+❯ContinuewithoutusingthisMCPserver
+
+Entertoconfirm·Esctocancel
+  
+  PressCtrl-C againto exit
+  

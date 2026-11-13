@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-39fcrpwp/projeto
+
+
+❯ Use as ferramentas consulta_teste e sincronizar_estado e mostre o resultado.
+
+● Vou chamar as duas ferramentas do servidor de teste agora:
+
+  Called servidor-teste 2 times
+
+● Aqui estão os resultados das duas ferramentas:
+
+  1. consulta_teste → retornou: "Texto fixo do servidor de teste."
+  2. sincronizar_estado → retornou: "Estado sincronizado."
+
+  Ambas as chamadas ao servidor MCP servidor-teste foram executadas com sucesso. ✅
+
+✻ Brewed for 10s · done 6:27
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                            ◐ medium · /effort
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

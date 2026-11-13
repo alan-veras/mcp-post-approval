@@ -1,0 +1,39 @@
+{
+ "security": {
+  "auth": {
+   "selectedType": "openai"
+  }
+ },
+ "model": {
+  "name": "falso"
+ },
+ "general": {
+  "disableAutoUpdate": true,
+  "disableUpdateNag": true
+ },
+ "privacy": {
+  "usageStatisticsEnabled": false
+ },
+ "telemetry": {
+  "enabled": false
+ },
+ "mcpServers": {
+  "servidor-teste": {
+   "command": "uvx",
+   "args": [
+    "servidor-teste-mcp",
+    "--celula",
+    "codigo_novo",
+    "--registro",
+    "/tmp/pergunta1-ndnfg6z8/registro-servidor.jsonl"
+   ],
+   "alwaysLoadTools": true
+  }
+ },
+ "$version": 4,
+ "permissions": {
+  "allow": [
+   "mcp__servidor-teste__consulta_teste"
+  ]
+ }
+}

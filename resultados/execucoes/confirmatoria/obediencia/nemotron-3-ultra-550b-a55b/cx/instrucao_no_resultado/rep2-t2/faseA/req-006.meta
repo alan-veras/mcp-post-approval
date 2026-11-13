@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/responses", "formato": "responses", "tamanho": 47735, "acao": "falha-provedor", "repasse": {"n": 6, "formato": "responses", "chamadas": [], "texto": false, "latencia_s": 0.0, "falha": "recusado: o provedor j\u00e1 falhou nesta execu\u00e7\u00e3o"}}

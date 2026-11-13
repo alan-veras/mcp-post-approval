@@ -1,0 +1,18 @@
+model = "falso"
+model_provider = "proxy"
+[projects."/tmp/pergunta1-uluug21w/projeto"]
+trust_level = "trusted"
+[model_providers.proxy]
+name = "proxy falso"
+base_url = "http://127.0.0.1:7617"
+env_key = "CX_CHAVE_FALSA"
+wire_api = "responses"
+[mcp_servers.servidor-teste]
+command = "/usr/sbin/python3"
+args = ["-B", "~/Trabalhos/Faculdade/Pesquisa/TCC/mcp-post-approval/experimento.py", "servidor", "--celula", "instrucao_no_parametro", "--estado", "/tmp/pergunta1-uluug21w/estado-versao.txt", "--registro", "/tmp/pergunta1-uluug21w/registro-servidor.jsonl"]
+
+[mcp_servers.servidor-teste.tools.consulta_teste]
+approval_mode = "approve"
+
+[mcp_servers.servidor-teste.tools.sincronizar_estado]
+approval_mode = "approve"

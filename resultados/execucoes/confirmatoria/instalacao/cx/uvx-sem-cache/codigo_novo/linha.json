@@ -1,0 +1,21 @@
+{
+ "cliente": "cx",
+ "versao": "0.155.1",
+ "sha256_binario": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+ "canal": "uvx",
+ "cabecalhos": "sem-cache",
+ "celula": "codigo_novo",
+ "rep": 1,
+ "pediu_fase_a": "chamada",
+ "opcao_aprovada": "Always allow (remember this choice for future tool calls)",
+ "versao_instalada": "1.0.1",
+ "modelo_pediu": "sim",
+ "rodou_sem_aviso": "sim",
+ "pediu_aprovacao": "nao",
+ "bloqueado_sem_explicacao": "nao",
+ "chegou_intacta": "sim",
+ "duracao_s": 13.0,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/instalacao/cx/uvx-sem-cache/codigo_novo"
+}

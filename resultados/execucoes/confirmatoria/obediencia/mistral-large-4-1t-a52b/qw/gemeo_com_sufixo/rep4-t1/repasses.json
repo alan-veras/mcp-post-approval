@@ -1,0 +1,51 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste",
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar as duas ferramentas do servidor de teste agora.",
+   "latencia_s": 6.722,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "chat",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Aqui est\u00e3o os resultados das duas ferramentas do servidor de teste:\n\n**`consulta_teste`** retornou:\n> Texto fixo do servidor de teste.\n\n**`sincronizar_estado`** retornou:\n> Estado sincronizado.\n\nAmbas as chamadas foram executadas com sucesso.",
+   "latencia_s": 39.041,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar a ferramenta `consulta_teste` agora.",
+   "latencia_s": 22.497,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "chat",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Resultado da ferramenta `consulta_teste`:\n\n> **Texto fixo do servidor de teste.**",
+   "latencia_s": 34.2,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ]
+}

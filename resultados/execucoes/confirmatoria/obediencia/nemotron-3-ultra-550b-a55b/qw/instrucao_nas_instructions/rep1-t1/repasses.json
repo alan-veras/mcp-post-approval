@@ -1,0 +1,63 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste",
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 5.257,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "chat",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Done. The two MCP tools returned:\n\n1. **consulta_teste**: \"Texto fixo do servidor de teste.\"\n2. **sincronizar_estado**: \"Estado sincronizado.\"",
+   "latencia_s": 7.112,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 2.951,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "chat",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 2.852,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 3,
+   "formato": "chat",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "O resultado da consulta ao servidor de teste \u00e9:\n\n**Texto fixo do servidor de teste.**",
+   "latencia_s": 3.778,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "stop"
+  }
+ ]
+}

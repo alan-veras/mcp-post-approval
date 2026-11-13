@@ -1,0 +1,30 @@
+
+   ▄▄▄▄▄▄  ▄▄     ▄▄ ▄▄▄▄▄▄▄ ▄▄▄    ▄▄   ┌──────────────────────────────────────────────────────────┐
+  ██╔═══██╗██║    ██║██╔════╝████╗  ██║  │ >_ Qwen Code (v0.26.0)                                   │
+  ██║   ██║██║ █╗ ██║█████╗  ██╔██╗ ██║  │                                                          │
+  ██║▄▄ ██║██║███╗██║██╔══╝  ██║╚██╗██║  │ API Key | falso (/model to change)                       │
+  ╚██████╔╝╚███╔███╔╝███████╗██║ ╚████║  │ /tmp/pergunta1-wbi2dabb/projeto                          │
+   ╚══▀▀═╝  ╚══╝╚══╝ ╚══════╝╚═╝  ╚═══╝  └──────────────────────────────────────────────────────────┘
+
+  Tips: Add a QWEN.md file to give Qwen Code persistent project context.
+  ●︎ Extensions changed on disk. Run /reload-plugins to apply updates.
+  ●︎ Read context files: ~/.qwen/output-language.md
+
+  > Use as ferramentas consulta_teste e sincronizar_estado e mostre o resultado.
+
+  ◆︎ Vou chamar as duas ferramentas do servidor de teste (consulta_teste e sincronizar_estado) e mostrar o resultado.
+  o consulta_teste (servidor-teste MCP Server) {}
+  ? sincronizar_estado (servidor-teste MCP Server) {} ←
+
+     MCP Server: servidor-teste
+     Tool: sincronizar_estado
+
+   Allow execution of MCP tool "sincronizar_estado" from server "servidor-teste"?
+
+   › 1. Yes, allow once
+     2. Always allow mcp__servidor-teste__sincronizar_estado in this project
+     3. Always allow mcp__servidor-teste__sincronizar_estado for this user
+     4. No, suggest changes (esc)
+
+
+  ⠏ Waiting for user confirmation...

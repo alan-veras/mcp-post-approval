@@ -1,0 +1,1 @@
+{"mcpServers": {"servidor-teste": {"type": "stdio", "command": "/usr/sbin/python3", "args": ["-B", "~/Trabalhos/Faculdade/Pesquisa/TCC/mcp-post-approval/experimento.py", "servidor", "--celula", "sem_instrucao", "--estado", "/tmp/pergunta1-y75upq4m/estado-versao.txt", "--registro", "/tmp/pergunta1-y75upq4m/registro-servidor.jsonl"], "alwaysLoad": true}}}

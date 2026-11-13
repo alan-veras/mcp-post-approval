@@ -1,0 +1,41 @@
+{
+  "numStartups": 5,
+  "customApiKeyResponses": {
+    "approved": [
+      "falso-sem-valor"
+    ],
+    "rejected": []
+  },
+  "hasCompletedOnboarding": true,
+  "projects": {
+    "/tmp/pergunta1-x9vwx9me/projeto": {
+      "hasTrustDialogAccepted": true
+    }
+  },
+  "firstStartTime": "2026-11-12T07:43:24.519Z",
+  "firstStartVersion": "2.1.321",
+  "machineID": "fa85728ced3de806f17c3c6438aa669d9b8e2e923d5c175314cf8df4304909f5",
+  "opusProMigrationComplete": true,
+  "sonnet1m45MigrationComplete": true,
+  "seenNotifications": {},
+  "hasResetAutoModeOptInForDefaultOffer": true,
+  "migrationVersion": 15,
+  "userID": "dd28148fb921cc9945f103ba3d288c547a8b8eca5871e802460453a3b1951040",
+  "pluginUsage": {
+    "cc-plugin-agents-md@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794469404698,
+      "lastUsedNumStartups": 5
+    },
+    "cc-plugin-privacy@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794469404698,
+      "lastUsedNumStartups": 5
+    },
+    "cc-plugin-plugin-authoring@builtin": {
+      "usageCount": 0,
+      "lastUsedAt": 1794469404698,
+      "lastUsedNumStartups": 5
+    }
+  }
+}

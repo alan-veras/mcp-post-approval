@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-kerdg3rp/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+● Vou chamar a ferramenta consulta_teste agora:
+
+  Called servidor-teste
+
+● Resultado da ferramenta consulta_teste:
+
+  ▎ Texto fixo do servidor de teste.
+
+  A ferramenta foi chamada com sucesso e retornou o texto fixo configurado no servidor de teste.
+
+✻ Churned for 4s · done 4:50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                            ◐ medium · /effort
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts · ← for agents

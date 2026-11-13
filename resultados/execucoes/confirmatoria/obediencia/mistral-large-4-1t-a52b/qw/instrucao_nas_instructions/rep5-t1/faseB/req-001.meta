@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/v1/chat/completions", "formato": "chat", "tamanho": 74603, "acao": "repasse", "repasse": {"n": 1, "formato": "chat", "chamadas": ["mcp__servidor-teste__consulta_teste"], "texto": false, "texto_modelo": "", "latencia_s": 18.797, "modelo_servido": "mistralai/mistral-large-4-1t-a52b", "finish_reason": "tool_calls"}}

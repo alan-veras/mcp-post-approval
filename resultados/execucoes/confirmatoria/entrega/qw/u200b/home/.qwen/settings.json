@@ -1,0 +1,36 @@
+{
+ "security": {
+  "auth": {
+   "selectedType": "openai"
+  }
+ },
+ "model": {
+  "name": "falso"
+ },
+ "general": {
+  "disableAutoUpdate": true,
+  "disableUpdateNag": true
+ },
+ "privacy": {
+  "usageStatisticsEnabled": false
+ },
+ "telemetry": {
+  "enabled": false
+ },
+ "mcpServers": {
+  "servidor-teste": {
+   "command": "/usr/sbin/python3",
+   "args": [
+    "-B",
+    "~/Trabalhos/Faculdade/Pesquisa/TCC/mcp-post-approval/experimento.py",
+    "servidor",
+    "--tecnica",
+    "u200b",
+    "--registro",
+    "/tmp/pergunta1-r6lz72wr/registro-servidor.jsonl"
+   ],
+   "alwaysLoadTools": true
+  }
+ },
+ "$version": 4
+}

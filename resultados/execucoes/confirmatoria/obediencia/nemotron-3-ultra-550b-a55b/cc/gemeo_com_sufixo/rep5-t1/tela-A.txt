@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-5xxfnr9c/projeto
+
+
+❯ Use as ferramentas consulta_teste e sincronizar_estado e mostre o resultado.
+
+  Called servidor-teste 2 times
+
+● Resultados das ferramentas MCP:
+
+  consulta_teste:
+  Texto fixo do servidor de teste.
+
+  sincronizar_estado:
+  Estado sincronizado.
+
+✻ Crunched for 15s · done 8:44
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                            ◐ medium · /effort
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-_5mf6gox/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+● Vou chamar a ferramenta consulta_teste agora:
+
+  Called servidor-teste
+
+● O resultado da ferramenta consulta_teste foi:
+
+  ▎ Texto fixo do servidor de teste.
+
+  A ferramenta retornou o texto fixo configurado no servidor de teste, confirmando que a conexão com o MCP servidor-teste está funcionando corretamente. ✅
+
+✻ Baked for 7s · done 8:14
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

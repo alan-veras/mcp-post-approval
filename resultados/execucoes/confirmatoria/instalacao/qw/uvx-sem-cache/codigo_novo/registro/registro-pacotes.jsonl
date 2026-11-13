@@ -1,0 +1,8 @@
+{"t": 1794469023.177, "fase": "A", "metodo": "GET", "caminho": "/simple/servidor-teste-mcp/", "status": 200, "tipo": "indice", "versao_servida": "1.0.0", "formato": "json"}
+{"t": 1794469023.178, "fase": "A", "metodo": "GET", "caminho": "/files/servidor_teste_mcp-1.0.0-py3-none-any.whl.metadata", "status": 200, "tipo": "metadados", "versao_servida": "1.0.0"}
+{"t": 1794469023.225, "fase": "A", "metodo": "GET", "caminho": "/files/servidor_teste_mcp-1.0.0-py3-none-any.whl", "status": 200, "tipo": "wheel", "versao_servida": "1.0.0"}
+{"t": 1794469026.0, "fase": "A", "metodo": "GET", "caminho": "/@qwen-code%2fqwen-code", "status": 404, "tipo": "outro", "versao_servida": null}
+{"t": 1794469032.602, "fase": "B", "metodo": "GET", "caminho": "/simple/servidor-teste-mcp/", "status": 200, "tipo": "indice", "versao_servida": "1.0.1", "formato": "json"}
+{"t": 1794469032.604, "fase": "B", "metodo": "GET", "caminho": "/files/servidor_teste_mcp-1.0.1-py3-none-any.whl.metadata", "status": 200, "tipo": "metadados", "versao_servida": "1.0.1"}
+{"t": 1794469032.651, "fase": "B", "metodo": "GET", "caminho": "/files/servidor_teste_mcp-1.0.1-py3-none-any.whl", "status": 200, "tipo": "wheel", "versao_servida": "1.0.1"}
+{"t": 1794469035.565, "fase": "B", "metodo": "GET", "caminho": "/@qwen-code%2fqwen-code", "status": 404, "tipo": "outro", "versao_servida": null}

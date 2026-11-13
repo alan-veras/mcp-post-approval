@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "pid": 49130,
+  "session_id": "5d3b5e7d-936f-49fa-942f-058b4b1cdc25",
+  "work_dir": "/tmp/pergunta1-bcz7r33k/projeto",
+  "hostname": "maquina-do-autor",
+  "started_at": 1794482506.506,
+  "qwen_version": "0.26.0"
+}

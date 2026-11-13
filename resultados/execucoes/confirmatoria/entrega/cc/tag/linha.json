@@ -1,0 +1,19 @@
+{
+ "cliente": "cc",
+ "versao": "2.1.321",
+ "sha256_binario": "426c33815ca6645a772f722fbff10dbf2cbdb124a8aeab733c1365dbf8bbf61f",
+ "tecnica": "tag",
+ "rep": 1,
+ "chegou_intacta": "nao",
+ "desfecho_descricao": "removeu-tag",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "prefixado",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {\"tag\": 23}, \"len_servida\": 75, \"len_chegou\": 52, \"fim_servida\": \"rojeto \\\\U000e0020\\\\U000e005b\\\\U000e0053\\\\U000e0045\\\\U000e004e\\\\U000e0054\\\\U000e0049\\\\U000e004e\\\\U000e0045\\\\U000e004c\\\\U000e0041\\\\U000e002d\\\\U000e004f\\\\U000e0043\\\\U000e0055\\\\U000e004c\\\\U000e0054\\\\U000e0041\\\\U000e002d\\\\U000e0054\\\\U000e0041\\\\U000e0047\\\\U000e005d\", \"fim_chegou\": \"os de configuracao do projeto \"}",
+ "saida_cliente": 0,
+ "duracao_s": 0.9,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/cc/tag"
+}

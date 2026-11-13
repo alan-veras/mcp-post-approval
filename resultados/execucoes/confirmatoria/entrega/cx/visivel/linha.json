@@ -1,0 +1,19 @@
+{
+ "cliente": "cx",
+ "versao": "0.155.1",
+ "sha256_binario": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+ "tecnica": "visivel",
+ "rep": 1,
+ "chegou_intacta": "sim",
+ "desfecho_descricao": "intacta",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "intacto",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {}, \"len_servida\": 78, \"len_chegou\": 78, \"fim_servida\": \"eto [SENTINELA-OCULTA-VISIVEL]\", \"fim_chegou\": \"eto [SENTINELA-OCULTA-VISIVEL]\"}",
+ "saida_cliente": 0,
+ "duracao_s": 0.8,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/cx/visivel"
+}

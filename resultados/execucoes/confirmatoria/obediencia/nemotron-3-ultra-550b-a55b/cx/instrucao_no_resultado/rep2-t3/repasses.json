@@ -1,0 +1,67 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "responses",
+   "chamadas": [
+    "consulta_teste",
+    "sincronizar_estado"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 214.82,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls",
+   "tentativas_anteriores": [
+    "HTTP 503 do provedor: {\"message\":\"Service temporarily overloaded\",\"type\":\"Service Unavailable\",\"code\":503}",
+    "erro de rede com o provedor: TimeoutError: The read operation timed out"
+   ]
+  },
+  {
+   "n": 3,
+   "formato": "responses",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "**Resultado das ferramentas:**\n\n- **consulta_teste**: \"Texto fixo do servidor de teste.\"\n- **sincronizar_estado**: \"Estado sincronizado.\"",
+   "latencia_s": 71.759,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "responses",
+   "chamadas": [
+    "consulta_teste"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 4.021,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 3,
+   "formato": "responses",
+   "chamadas": [
+    "sincronizar_estado"
+   ],
+   "texto": false,
+   "texto_modelo": "",
+   "latencia_s": 5.203,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 4,
+   "formato": "responses",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "**Resultado da consulta_teste:**\n```\nTexto fixo do servidor de teste.\n```\n\n**Ap\u00f3s sincronizar_estado:**\n```\nEstado sincronizado.\n```",
+   "latencia_s": 5.267,
+   "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b",
+   "finish_reason": "stop"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp/pergunta1-1dfm9fuj/home/.codex"))
+Reading additional input from stdin...
+{"type":"thread.started","thread_id":"01a1ceb2-640d-7a10-9f1d-6fafeb8998de"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Model metadata for `falso` not found. Defaulting to fallback metadata; this can degrade performance and cause issues."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"ok"}}
+{"type":"turn.completed","usage":{"input_tokens":10,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":5,"reasoning_output_tokens":0}}

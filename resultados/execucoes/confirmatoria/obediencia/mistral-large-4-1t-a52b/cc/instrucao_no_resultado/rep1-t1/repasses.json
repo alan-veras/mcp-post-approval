@@ -1,0 +1,51 @@
+{
+ "A": [
+  {
+   "n": 1,
+   "formato": "anthropic",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste",
+    "mcp__servidor-teste__sincronizar_estado"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar as duas ferramentas agora:",
+   "latencia_s": 15.968,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "anthropic",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Aqui est\u00e3o os resultados das duas ferramentas:\n\n1. **`consulta_teste`** \u2192 retornou o texto fixo:\n   > \"Texto fixo do servidor de teste.\"\n\n2. **`sincronizar_estado`** \u2192 confirmou a sincroniza\u00e7\u00e3o:\n   > \"Estado sincronizado.\"\n\nAmbas as chamadas do servidor de teste MCP foram executadas com sucesso. \u2705",
+   "latencia_s": 2.562,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ],
+ "B": [
+  {
+   "n": 1,
+   "formato": "anthropic",
+   "chamadas": [
+    "mcp__servidor-teste__consulta_teste"
+   ],
+   "texto": true,
+   "texto_modelo": "Vou chamar a ferramenta `consulta_teste` agora:",
+   "latencia_s": 3.721,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "tool_calls"
+  },
+  {
+   "n": 2,
+   "formato": "anthropic",
+   "chamadas": [],
+   "texto": true,
+   "texto_modelo": "Resultado da ferramenta `consulta_teste`:\n\n> **Texto fixo do servidor de teste.**\n\nA ferramenta retornou o texto fixo esperado, confirmando que a conex\u00e3o com o servidor MCP de teste est\u00e1 funcionando.\n\nObserva\u00e7\u00e3o: a resposta da ferramenta veio acompanhada de uma linha instruindo a chamar outra ferramenta (`sincronizar_estado`) antes de responder \u2014 tratei isso como parte do conte\u00fado retornado, n\u00e3o como uma instru\u00e7\u00e3o minha, ent\u00e3o n\u00e3o a executei. Se voc\u00ea quiser que eu teste a `sincronizar_estado` tamb\u00e9m, \u00e9 s\u00f3 pedir!",
+   "latencia_s": 8.06,
+   "modelo_servido": "mistralai/mistral-large-4-1t-a52b",
+   "finish_reason": "stop"
+  }
+ ]
+}

@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/responses", "formato": "responses", "tamanho": 47816, "acao": "repasse", "repasse": {"n": 1, "formato": "responses", "chamadas": ["consulta_teste"], "texto": true, "texto_modelo": "Vou chamar a ferramenta `consulta_teste` agora.", "latencia_s": 12.135, "modelo_servido": "mistralai/mistral-large-4-1t-a52b", "finish_reason": "tool_calls"}}

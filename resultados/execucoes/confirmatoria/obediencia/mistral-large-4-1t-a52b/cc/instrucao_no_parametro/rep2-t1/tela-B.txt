@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-umtb4d5o/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+● Vou chamar a ferramenta consulta_teste agora.
+
+  Called servidor-teste
+
+● Pronto! ✅  A ferramenta consulta_teste foi chamada com sucesso.
+
+  Resultado:
+
+  ▎ Texto fixo do servidor de teste.
+
+  É exatamente o que a ferramenta promete — ela sempre retorna esse texto fixo. Se quiser, posso chamar a sincronizar_estado também para manter a sessão
+  consistente com o servidor.
+
+✻ Baked for 1m 15s · done 6:11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

@@ -1,0 +1,1 @@
+{"mcpServers": {"servidor-teste": {"type": "stdio", "command": "uvx", "args": ["servidor-teste-mcp", "--celula", "codigo_novo", "--registro", "/tmp/pergunta1-qyct1hre/registro-servidor.jsonl"], "alwaysLoad": true}}}

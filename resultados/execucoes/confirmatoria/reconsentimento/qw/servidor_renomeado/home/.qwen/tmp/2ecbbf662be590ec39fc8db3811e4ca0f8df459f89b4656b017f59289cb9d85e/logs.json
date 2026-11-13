@@ -1,0 +1,16 @@
+[
+  {
+    "sessionId": "aef503e1-aa61-4657-9ec2-1d77468e0c4f",
+    "messageId": 0,
+    "type": "user",
+    "message": "Use a ferramenta consulta_teste e mostre o resultado.",
+    "timestamp": "2026-11-12T07:33:06.531Z"
+  },
+  {
+    "sessionId": "0b7d1a4a-7831-43e4-8a0c-9b6e06df2823",
+    "messageId": 0,
+    "type": "user",
+    "message": "Use a ferramenta consulta_teste e mostre o resultado.",
+    "timestamp": "2026-11-12T07:33:15.710Z"
+  }
+]

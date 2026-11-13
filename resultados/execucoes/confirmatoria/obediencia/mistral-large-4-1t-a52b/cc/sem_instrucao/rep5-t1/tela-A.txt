@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-hhz5270q/projeto
+
+
+❯ Use as ferramentas consulta_teste e sincronizar_estado e mostre o resultado.
+
+● Vou chamar as duas ferramentas do servidor de teste agora:
+
+  Called servidor-teste 2 times
+
+● Pronto! Ambas as ferramentas foram chamadas com sucesso:
+
+  1. consulta_teste → retornou: "Texto fixo do servidor de teste."
+  2. sincronizar_estado → retornou: "Estado sincronizado."
+
+  O servidor MCP servidor-teste está funcionando corretamente e respondendo às duas chamadas. ✅
+
+✻ Sautéed for 9s · done 8:58
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                                                                                            ◐ medium · /effort
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

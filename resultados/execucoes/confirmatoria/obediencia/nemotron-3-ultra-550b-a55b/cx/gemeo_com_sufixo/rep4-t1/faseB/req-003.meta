@@ -1,0 +1,1 @@
+{"metodo": "POST", "caminho": "/responses", "formato": "responses", "tamanho": 48485, "acao": "repasse", "repasse": {"n": 3, "formato": "responses", "chamadas": [], "texto": true, "texto_modelo": "**Resultado da consulta:**\n```\nTexto fixo do servidor de teste.\n```", "latencia_s": 2.633, "modelo_servido": "nvidia/nemotron-3-ultra-550b-a55b", "finish_reason": "stop"}}

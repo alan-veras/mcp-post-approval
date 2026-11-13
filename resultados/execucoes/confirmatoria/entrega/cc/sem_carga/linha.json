@@ -1,0 +1,19 @@
+{
+ "cliente": "cc",
+ "versao": "2.1.321",
+ "sha256_binario": "426c33815ca6645a772f722fbff10dbf2cbdb124a8aeab733c1365dbf8bbf61f",
+ "tecnica": "sem_carga",
+ "rep": 1,
+ "chegou_intacta": "sim",
+ "desfecho_descricao": "intacta",
+ "canal": "lista-ferramentas",
+ "desfecho_nome": "prefixado",
+ "desfecho_esquema": "intacto",
+ "adiada": "nao",
+ "diff": "{\"sumiram\": {}, \"len_servida\": 51, \"len_chegou\": 51, \"fim_servida\": \"vos de configuracao do projeto\", \"fim_chegou\": \"vos de configuracao do projeto\"}",
+ "saida_cliente": 0,
+ "duracao_s": 0.9,
+ "rede_bloqueada": "nao",
+ "falha_instrumento": "",
+ "evidencia": "execucoes/confirmatoria/entrega/cc/sem_carga"
+}

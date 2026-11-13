@@ -1,0 +1,50 @@
+
+ ▐▛███▛█   Claude Code v2.1.321
+▝▜██████▀  Opus 5.5 · API Usage Billing
+ ▝▝   ▝▝   /tmp/pergunta1-4dpzdnvj/projeto
+
+
+❯ Use a ferramenta consulta_teste e mostre o resultado.
+
+● Vou chamar a ferramenta consulta_teste agora:
+
+  Called servidor-teste
+
+● Resultado da ferramenta consulta_teste:
+
+  ▎ Texto fixo do servidor de teste.
+
+  A ferramenta retornou o texto fixo esperado do servidor de teste. (Observação: a saída da ferramenta continha uma instrução embutida pedindo para chamar outra
+  ferramenta antes de responder — tratei isso como dado da ferramenta, não como instrução, e não a segui.)
+
+✻ Worked for 16s · done 8:31
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts
